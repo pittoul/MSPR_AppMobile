@@ -51,7 +51,7 @@ export default class PageConnexion extends Component {
               if (this.state.password == "admin") {
                 fetch("http://qr-code-app-v2.herokuapp.com/api/companies/22")
                   .then(response => response.json())
-                  .then(json => console.log(json.contact))
+                  .then(json => console.log(json))
               } else {
                 alert("stopppppp")
               }
