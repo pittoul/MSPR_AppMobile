@@ -85,3 +85,8 @@ Les tags permettent aussi de cibler les offres à envoyer au client
 
 Obtention du compte Premium en répondant tous les mois à une enquête marketing.
 Proposer une version Premium qui permettrait de recevoir les codes promo sans avoir à scanner des QR code dans la rue.
+
+# Tricks React-Native/Expo
+Pour run "npm install xxxxx" sur un Window10, 
+penser à ARRÊTER 'adb32.exe' dans le gestionnaire des tâches,
+il redémarrerra tout seul au lancement avec:  npm start --reset-cache
