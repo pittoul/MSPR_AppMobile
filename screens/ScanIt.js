@@ -15,7 +15,7 @@ export default function ScanIt() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Type de code ${type}\ndata du code : ${data}`);
   };
 
   if (hasPermission === null) {

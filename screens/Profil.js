@@ -131,6 +131,9 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderColor: "green",
-    marginVertical: 10
+    marginVertical: 10,
+    textAlign: "center",
+    marginVertical: 10,
+    borderRadius: 5
   }
 })

@@ -45,11 +45,17 @@ export default class PageConnexion extends Component {
             style={styles.input}
           />
 
-
-
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate("Historique")}
+            onPress={() => {
+              if (this.state.password == "admin") {
+                fetch("http://qr-code-app-v2.herokuapp.com/api/companies/22")
+                  .then(response => response.json())
+                  .then(json => console.log(json.contact))
+              } else {
+                alert("stopppppp")
+              }
+            }}
             // onPress={this.onLogin.bind(this)}
           >
             <Text style={styles.buttonText}> Valider </Text>
@@ -90,6 +96,8 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderColor: "green",
-    marginVertical: 10
+    textAlign: "center",
+    marginVertical: 10,
+    borderRadius: 5
   }
 })
