@@ -9,6 +9,16 @@ import InfosLegalesScreen from "./screens/InfosLegales"
 import HistoriqueScreen from "./screens/Historique"
 import ScanIt from "./screens/ScanIt"
 import Profil from "./screens/Profil"
+// import NavigationBar from 'react-native-navbar-color'
+
+// NavigationBar.setColor('#ffab8e')
+// NavigationBar.setStatusBarColor('#ffab8e',false)
+
+
+
+
+
+
 // import Constants from 'expo-constants';
 
 //   const styles = StyleSheet.create({

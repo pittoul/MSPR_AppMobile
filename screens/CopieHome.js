@@ -76,7 +76,7 @@ const maListeDeNavigation = createStackNavigator(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#acf",
+    // backgroundColor: "#acf",
     alignItems: "center",
     justifyContent: "center"
   },

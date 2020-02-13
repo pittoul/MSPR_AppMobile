@@ -17,7 +17,7 @@ export default class Profil extends Component {
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    dateNaiss: ""
+    phone: ""
   }
 
   onLogin() {
@@ -70,16 +70,44 @@ export default class Profil extends Component {
             style={styles.input}
           />
           <TextInput
-            value={this.state.dateNaiss}
-            onChangeText={dateNaiss => this.setState({ dateNaiss })}
-            placeholder={"dateNaiss..."}
+            value={this.state.phone}
+            onChangeText={phone => this.setState({ phone })}
+            placeholder={"Numéro de mobile..."}
             // secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate("Historique")}
+            onPress={() => {
+              if (this.state.password == this.state.confirmPassword) {
+                fetch("http://qr-code-app-v2.herokuapp.com/api/users", {
+                  method: "POST",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    firstName: this.state.firstname,
+                    lastName: this.state.lastName,
+                    email: this.state.email,
+                    password: this.state.password,
+                    phone: this.state.phone,
+                    hasAgreed: true
+                  })
+                })
+                  .then(response => response.json())
+                  .then(json => {
+                    console.log(json)
+                    // if (json.authentication == "success") {
+                    //   this.props.navigation.navigate("Historique")
+                    // } else {
+                    //   this.props.navigation.navigate("Home")
+                    // }
+                  })
+              }
+            }}
+            // onPress={() => this.props.navigation.navigate("Historique")}
             // onPress={this.onLogin.bind(this)}
           >
             <Text style={styles.buttonText}> Valider </Text>

@@ -11,7 +11,7 @@ import {
   Alert,
   ScrollView
 } from "react-native"
-
+import * as SecureStore from 'expo-secure-store';
 export default class PageConnexion extends Component {
   state = {
     email: "",
@@ -23,6 +23,7 @@ export default class PageConnexion extends Component {
 
     Alert.alert("Credentials", `email: ${email} + password: ${password}`)
   }
+
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "rgb(0, 234, 12)" }}>
@@ -32,7 +33,7 @@ export default class PageConnexion extends Component {
             value={this.state.email}
             keyboardType="email-address"
             onChangeText={email => this.setState({ email })}
-            placeholder="email..."
+            placeholder="xxxemail..."
             placeholderTextColor="gray"
             style={styles.input}
           />
@@ -48,15 +49,29 @@ export default class PageConnexion extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (this.state.password == "admin") {
-                fetch("http://qr-code-app-v2.herokuapp.com/api/companies/22")
-                  .then(response => response.json())
-                  .then(json => console.log(json))
-              } else {
-                alert("stopppppp")
-              }
+              fetch("http://qr-code-app-v2.herokuapp.com/authentication", {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  email: "admin@admin.fr",
+                  password: "admin"
+                  // email: this.state.email,
+                  // password: this.state.password,
+                })
+              })
+                .then(response => response.json())
+                .then(json => {
+                  console.log(json)
+                  if (json.authentication == "success") {
+                    this.props.navigation.navigate("Historique")
+                  } else {
+                    this.props.navigation.navigate("Home")
+                  }
+                })
             }}
-            // onPress={this.onLogin.bind(this)}
           >
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
@@ -65,6 +80,7 @@ export default class PageConnexion extends Component {
     )
   }
 }
+
 
 const couleurs = {
   fond1: "rgb(255, 0, 0)",
@@ -76,8 +92,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: couleurs.fond1
+    justifyContent: "center"
+    // backgroundColor: couleurs.fond1
   },
   titleText: {
     alignItems: "center",
@@ -94,7 +110,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     backgroundColor: couleurs.fond2
-
   },
   buttonText: {
     alignItems: "center",
@@ -109,6 +124,5 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 5,
     backgroundColor: couleurs.fond3
-
   }
 })

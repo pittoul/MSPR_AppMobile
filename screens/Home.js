@@ -65,7 +65,7 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#acf",
+    // backgroundColor: "#acf",
     alignItems: "center",
     justifyContent: "center"
   },
