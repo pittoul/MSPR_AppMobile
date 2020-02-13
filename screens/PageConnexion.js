@@ -25,7 +25,7 @@ export default class PageConnexion extends Component {
   }
   render() {
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView style={{ flex: 1, backgroundColor: "rgb(0, 234, 12)" }}>
         <View style={styles.container}>
           <Text>Connexion : </Text>
           <TextInput
@@ -66,11 +66,18 @@ export default class PageConnexion extends Component {
   }
 }
 
+const couleurs = {
+  fond1: "rgb(255, 0, 0)",
+  fond2: "rgb(0, 255, 0)",
+  fond3: "rgb(0, 0, 255)"
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: couleurs.fond1
   },
   titleText: {
     alignItems: "center",
@@ -78,14 +85,16 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "powderblue",
+    // backgroundColor: "powderblue",
     width: 200,
     height: 44,
     padding: 10,
     borderWidth: 1,
     borderColor: "white",
     borderRadius: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    backgroundColor: couleurs.fond2
+
   },
   buttonText: {
     alignItems: "center",
@@ -95,9 +104,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 44,
     borderWidth: 1,
-    borderColor: "green",
+    // borderColor: "green",
     textAlign: "center",
     marginVertical: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    backgroundColor: couleurs.fond3
+
   }
 })
