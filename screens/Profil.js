@@ -61,9 +61,9 @@ export default class Profil extends Component {
             style={styles.input}
           />
           <TextInput
-            value="xxxx"
+            value=""
             onChangeText=""
-            placeholder={"Mot de passe..."}
+            placeholder={"Nouveau mot de passe..."}
             secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
