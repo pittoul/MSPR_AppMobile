@@ -9,9 +9,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native"
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store"
 export default class PageConnexion extends Component {
   state = {
     email: "",
@@ -64,15 +65,22 @@ export default class PageConnexion extends Component {
               })
                 .then(response => response.json())
                 .then(json => {
-                  console.log(json)
-                  if (json.authentication == "success") {
-                    this.props.navigation.navigate("Historique")
+                  console.log('\nHisorique de discounts: ', json.user.discounts)
+                  if (json.user) {
+                    AsyncStorage.setItem("discounts", JSON.stringify(json.user.discounts)).then(
+                    AsyncStorage.setItem("gadjio", JSON.stringify(json.user)).then(
+                      () => {
+                        this.props.navigation.navigate("Historique")
+                      }
+                    )
+                )
                   } else {
                     this.props.navigation.navigate("Home")
                   }
                 })
             }}
           >
+
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
         </View>
@@ -81,11 +89,10 @@ export default class PageConnexion extends Component {
   }
 }
 
-
 const couleurs = {
-  fond1: "rgb(255, 0, 0)",
-  fond2: "rgb(0, 255, 0)",
-  fond3: "rgb(0, 0, 255)"
+  fond1: "rgb(100, 0, 0)",
+  fond2: "rgb(0, 100, 0)",
+  fond3: "rgb(0, 0, 100)"
 }
 
 const styles = StyleSheet.create({
@@ -93,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
-    // backgroundColor: couleurs.fond1
   },
   titleText: {
     alignItems: "center",
@@ -101,7 +107,6 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    // backgroundColor: "powderblue",
     width: 200,
     height: 44,
     padding: 10,
@@ -119,7 +124,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 44,
     borderWidth: 1,
-    // borderColor: "green",
     textAlign: "center",
     marginVertical: 10,
     borderRadius: 5,

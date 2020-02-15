@@ -7,72 +7,95 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native"
 
 export default class Profil extends Component {
-  state = {
-    email: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
-    dateNaiss: ""
+  constructor(props) {
+    super(props)
+    this.state = {
+      utilisateur: null,
+    }
   }
 
-  onLogin() {
-    const { email, password } = this.state
 
-    Alert.alert("Credentials", `email: ${email} + password: ${password}`)
+  componentDidMount() {
+
+    let infosUser = async () => {
+      try {
+        const value = await AsyncStorage.getItem("gadjio")
+        if (value !== null) {
+          // console.log("\nEmail du user loggué:")
+          // console.log(JSON.parse(value).email)
+          this.setState({
+            utilisateur: JSON.parse(value)
+          })
+        }
+      } catch (error) {
+        console.log("Error retrieving data")
+      }
+    }
+    infosUser()
   }
+
+
+  
+
+  
   render() {
+    const { utilisateur } = this.state
+    if (utilisateur === null) {
+      return null
+    }
+
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.container}>
           <TextInput
-            value={this.state.email}
+            value={this.state.utilisateur.email}
             keyboardType="email-address"
-            onChangeText={email => this.setState({ email })}
+            onChangeText=""
             placeholder={"email..."}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TextInput
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-            placeholder={"password..."}
+            value="xxxx"
+            onChangeText=""
+            placeholder={"Mot de passe..."}
             secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TextInput
-            value={this.state.confirmPassword}
-            onChangeText={confirmPassword => this.setState({ confirmPassword })}
-            placeholder={"confirmPassword..."}
+            value=""
+            onChangeText=""
+            placeholder={"Confirmez mot de passe..."}
             secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TextInput
-            value={this.state.firstName}
-            onChangeText={firstName => this.setState({ firstName })}
-            placeholder={"firstName..."}
+            value={this.state.utilisateur.firstName}
+            onChangeText=""
+            placeholder={"Prénom..."}
             // secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TextInput
-            value={this.state.lastName}
-            onChangeText={lastName => this.setState({ lastName })}
-            placeholder={"lastName..."}
+            value={this.state.utilisateur.lastName}
+            onChangeText=""
+            placeholder={"Nom..."}
             // secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
           />
           <TextInput
-            value={this.state.dateNaiss}
-            onChangeText={dateNaiss => this.setState({ dateNaiss })}
-            placeholder={"dateNaiss..."}
+            value={this.state.utilisateur.phone}
+            onChangeText=""
+            placeholder={"Numéro de mobile..."}
             // secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
@@ -82,7 +105,7 @@ export default class Profil extends Component {
             onPress={() => this.props.navigation.navigate("Historique")}
             // onPress={this.onLogin.bind(this)}
           >
-            <Text style={styles.buttonText}> Enregistrer els modifs </Text>
+            <Text style={styles.buttonText}> Enregistrer les modifs </Text>
           </TouchableOpacity>
 
           <Button

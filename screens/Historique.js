@@ -4,18 +4,82 @@ import {
   View,
   Button,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native"
+
 import React, { Component } from "react"
 
 export default class HomeScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      utilisateur: null,
+      discounts: null
+    }
+  }
+
+  componentDidMount() {
+
+    let infosUser = async () => {
+      try {
+        const value = await AsyncStorage.getItem("gadjio")
+        if (value !== null) {
+          // console.log("\nEmail du user loggué:")
+          // console.log(JSON.parse(value).email)
+          this.setState({
+            utilisateur: JSON.parse(value)
+          })
+        }
+      } catch (error) {
+        console.log("Error retrieving data")
+      }
+    }
+
+    let infosDiscounts = async () => {
+      try {
+        const value = await AsyncStorage.getItem("discounts")
+        if (value !== null) {
+          // console.log("\nDiscounts du user loggué:")
+          // console.log(JSON.parse(value).email)
+          this.setState({
+            discounts: JSON.parse(value)
+          })
+        }
+      } catch (error) {
+        console.log("Error retrieving data")
+      }
+    }
+
+    // Initialisation des variables 'this.state : user et discounts'
+    infosUser()
+    infosDiscounts()
+  }
+
   render() {
+    const { utilisateur } = this.state
+    if (utilisateur === null) {
+      return null
+    }
+    const { discounts } = this.state
+    if (discounts == null) {
+      return null
+    }
+
     return (
       <View style={styles.container}>
         <Text style={styles.titleText}>PAGE PRINCIPALE</Text>
         <Text></Text>
-        <Text>Historique des promos</Text>
-        <Text> et </Text>
+        <Text> INFOS USER EN LOCAL STORAGE: </Text>
+        <Text></Text>
+        <Text>{this.state.utilisateur.email}</Text>
+        <Text>
+          Prénom: {this.state.utilisateur.firstName} / Nom:{" "}
+          {this.state.utilisateur.lastName}
+        </Text>
+        <Text>tél: {this.state.utilisateur.phone}</Text>
+        <Text>Discounts : {typeof this.state.discounts}</Text>
+        <Text>ici</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.props.navigation.navigate("ScanIt")}
@@ -41,7 +105,6 @@ export default class HomeScreen extends Component {
     )
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

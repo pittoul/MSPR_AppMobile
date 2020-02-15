@@ -9,6 +9,8 @@ import InfosLegalesScreen from "./screens/InfosLegales"
 import HistoriqueScreen from "./screens/Historique"
 import ScanIt from "./screens/ScanIt"
 import Profil from "./screens/Profil"
+
+// let user = {}
 // import NavigationBar from 'react-native-navbar-color'
 
 // NavigationBar.setColor('#ffab8e')
