@@ -37,6 +37,7 @@ export default class PageConnexion extends Component {
             placeholder="email..."
             placeholderTextColor="gray"
             style={styles.input}
+            // validators={['required', 'isEmail']}
           />
           <TextInput
             value={this.state.password}
@@ -45,6 +46,7 @@ export default class PageConnexion extends Component {
             secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
+            // validators={['required', 'isString']}
           />
 
           <TouchableOpacity

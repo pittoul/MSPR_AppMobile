@@ -23,6 +23,7 @@
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native-form-validator": "^0.3.2",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-navbar-color": "^1.0.3",
     "react-native-pure-jwt": "^2.1.1",
