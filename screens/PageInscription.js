@@ -17,6 +17,7 @@ export default class Profil extends ValidationComponent {
     constructor(props) {
         super(props);
         this.state = {
+            hasAgreed: true,
             email: "",
             password: "",
             confirmPassword: "",
@@ -24,24 +25,20 @@ export default class Profil extends ValidationComponent {
             lastName: "",
             phone: ""
         };
-        this._onPressButton = this._onPressButton.bind(this)
+        this._onPressButton = this._onPressButton.bind(this);
+        this.reponse = {}
     }
-
-
-    // onLogin() {
-    //     const {email, password} = this.state
-    //
-    //     Alert.alert("Credentials", `email: ${email} + password: ${password}`)
-    // }
 
     _onPressButton() {
         console.log(this.state.email);
         const validationResult = validate({addressEmail: this.state.email}, constraints);
-        console.log(validationResult)
+        console.log(validationResult);
         // validationResult is undefined if there are no errors
         if (validationResult == undefined) {
             //Inscription retour au menu
-            // this.createUser();
+            console.log("STATE :", this.state);
+            this.createUser();
+            console.log("REPONSE : ", this.reponse);
             console.log("INSCRIPTION")
         }
         this.setState({errors: validationResult});
@@ -105,101 +102,7 @@ export default class Profil extends ValidationComponent {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={this._onPressButton}
-                        // onPress={() => {
-                        //   // if (this.state.password == this.state.confirmPassword) {
-                        //   //   var myHeaders = new Headers()
-                        //   //   myHeaders.append("Content-Type", "application/json")
-                        //   //   myHeaders.append("Accept", "application/json")
-                        //   //   myHeaders.append("Authorization", "Bearer " + this.state.token)
-                        //
-                        //   //   // var raw = JSON.stringify({"firstName":"Denis","lastName":"Brognard","email":"denis@brognard.fr","password":"admin","phone":"0606060606","hasAgreed":true,"discounts":["/api/discounts/201","/api/discounts/204","/api/discounts/206"],"apiRoles":["/api/api_roles/3"]});
-                        //   //   var raw = JSON.stringify({
-                        //   //     firstName: this.state.firstname,
-                        //   //     lastName: this.state.lastName,
-                        //   //     email: this.state.email,
-                        //   //     password: this.state.password,
-                        //   //     phone: this.state.phone,
-                        //   //     hasAgreed: true
-                        //   //   })
-                        //   //   var requestOptions = {
-                        //   //     method: "POST",
-                        //   //     headers: myHeaders,
-                        //   //     body: raw,
-                        //   //     redirect: "follow"
-                        //   //   }
-                        //
-                        //   //   fetch(
-                        //   //     "http://qr-code-app-v2.herokuapp.com/api/users",
-                        //   //     requestOptions
-                        //   //   )
-                        //   //     .then(response => response.text())
-                        //   //     .then(result => console.log(result))
-                        //   //     .catch(error => console.log("error", error))
-                        //   // } else {
-                        //   //   // a mettre en onblur ce sera plus classe!
-                        //   //   alert("Les mots de passe ne correspondent pas !")
-                        //   // }
-                        //
-                        //   if (this.state.password == this.state.confirmPassword) {
-                        //
-                        //
-                        //     var myHeaders = new Headers();
-                        //     myHeaders.append("Content-Type", "application/json");
-                        //     myHeaders.append("Accept", "application/json");
-                        //
-                        //     // var raw = JSON.stringify({"firstName":"Denis","lastName":"Brognard","email":"denis@brognard.fr","password":"admin","phone":"0606060606","hasAgreed":true,"discounts":["/api/discounts/201","/api/discounts/204","/api/discounts/206"],"apiRoles":["/api/api_roles/3"]});
-                        //     var raw = JSON.stringify({
-                        //           firstName: this.state.firstname,
-                        //           lastName: this.state.lastName,
-                        //           email: this.state.email,
-                        //           password: this.state.password,
-                        //           phone: this.state.phone,
-                        //           hasAgreed: true,
-                        //           discounts: ["/api/discounts/201","/api/discounts/204","/api/discounts/206"],
-                        //           apiRoles: ["/api/api_roles/3"]
-                        //         })
-                        //     var requestOptions = {
-                        //       method: 'POST',
-                        //       headers: myHeaders,
-                        //       body: raw,
-                        //       redirect: 'follow'
-                        //     };
-                        //
-                        //     fetch("http://qr-code-app-v2.herokuapp.com/api/users", requestOptions)
-                        //       .then(response => response.text())
-                        //       .then(result => console.log(result))
-                        //       .catch(error => console.log('error', error));
-                        //
-                        //
-                        //
-                        //     // fetch("http://qr-code-app-v2.herokuapp.com/api/users", {
-                        //     //   method: "POST",
-                        //     //   headers: {
-                        //     //     Accept: "application/json",
-                        //     //     "Content-Type": "application/json"
-                        //     //   },
-                        //     //   body: JSON.stringify({
-                        //     //     firstName: this.state.firstname,
-                        //     //     lastName: this.state.lastName,
-                        //     //     email: this.state.email,
-                        //     //     password: this.state.password,
-                        //     //     phone: this.state.phone,
-                        //     //     hasAgreed: true
-                        //     //   })
-                        //     // })
-                        //     //   .then(response => response.json())
-                        //     //   .then(json => {
-                        //     //     console.log(json)
-                        //     //     // if (json.authentication == "success") {
-                        //     //     //   this.props.navigation.navigate("Historique")
-                        //     //     // } else {
-                        //     //     //   this.props.navigation.navigate("Home")
-                        //     //     // }
-                        //     //   })
-                        //   }
-                        //}}
-                        // onPress={() => this.props.navigation.navigate("Historique")}
-                        // onPress={this.onLogin.bind(this)}
+
                     >
                         <Text style={styles.buttonText}> Valider </Text>
                     </TouchableOpacity>
@@ -236,7 +139,14 @@ export default class Profil extends ValidationComponent {
         })
             .then(response => response.json())
             .then(json => {
-                console.log(json)
+                this.reponse = json;
+                console.log("EMAIL :",this.reponse.email);
+                if (this.reponse.email === "" || this.reponse.email === null || this.reponse.email === undefined) {
+                    alert("Erreur de l'inscription");
+                    this.props.navigation.navigate('Home');
+                }else
+                    this.props.navigation.navigate('Home');
+                console.log("REPONSE PROMISE :", this.reponse)
             })
     }
 }
