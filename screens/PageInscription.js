@@ -25,6 +25,8 @@ export default class Profil extends Component {
 
     Alert.alert("Credentials", `email: ${email} + password: ${password}`)
   }
+
+  
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
@@ -80,31 +82,96 @@ export default class Profil extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
+              // if (this.state.password == this.state.confirmPassword) {
+              //   var myHeaders = new Headers()
+              //   myHeaders.append("Content-Type", "application/json")
+              //   myHeaders.append("Accept", "application/json")
+              //   myHeaders.append("Authorization", "Bearer " + this.state.token)
+
+              //   // var raw = JSON.stringify({"firstName":"Denis","lastName":"Brognard","email":"denis@brognard.fr","password":"admin","phone":"0606060606","hasAgreed":true,"discounts":["/api/discounts/201","/api/discounts/204","/api/discounts/206"],"apiRoles":["/api/api_roles/3"]});
+              //   var raw = JSON.stringify({
+              //     firstName: this.state.firstname,
+              //     lastName: this.state.lastName,
+              //     email: this.state.email,
+              //     password: this.state.password,
+              //     phone: this.state.phone,
+              //     hasAgreed: true
+              //   })
+              //   var requestOptions = {
+              //     method: "POST",
+              //     headers: myHeaders,
+              //     body: raw,
+              //     redirect: "follow"
+              //   }
+
+              //   fetch(
+              //     "http://qr-code-app-v2.herokuapp.com/api/users",
+              //     requestOptions
+              //   )
+              //     .then(response => response.text())
+              //     .then(result => console.log(result))
+              //     .catch(error => console.log("error", error))
+              // } else {
+              //   // a mettre en onblur ce sera plus classe!
+              //   alert("Les mots de passe ne correspondent pas !")
+              // }
+
               if (this.state.password == this.state.confirmPassword) {
-                fetch("http://qr-code-app-v2.herokuapp.com/api/users", {
-                  method: "POST",
-                  headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    firstName: this.state.firstname,
-                    lastName: this.state.lastName,
-                    email: this.state.email,
-                    password: this.state.password,
-                    phone: this.state.phone,
-                    hasAgreed: true
-                  })
-                })
-                  .then(response => response.json())
-                  .then(json => {
-                    console.log(json)
-                    // if (json.authentication == "success") {
-                    //   this.props.navigation.navigate("Historique")
-                    // } else {
-                    //   this.props.navigation.navigate("Home")
-                    // }
-                  })
+
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Accept", "application/json");
+                
+                // var raw = JSON.stringify({"firstName":"Denis","lastName":"Brognard","email":"denis@brognard.fr","password":"admin","phone":"0606060606","hasAgreed":true,"discounts":["/api/discounts/201","/api/discounts/204","/api/discounts/206"],"apiRoles":["/api/api_roles/3"]});
+                var raw = JSON.stringify({
+                      firstName: this.state.firstname,
+                      lastName: this.state.lastName,
+                      email: this.state.email,
+                      password: this.state.password,
+                      phone: this.state.phone,
+                      hasAgreed: true,
+                      discounts: ["/api/discounts/201","/api/discounts/204","/api/discounts/206"],
+                      apiRoles: ["/api/api_roles/3"]
+                    })
+                var requestOptions = {
+                  method: 'POST',
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: 'follow'
+                };
+                
+                fetch("http://qr-code-app-v2.herokuapp.com/api/users", requestOptions)
+                  .then(response => response.text())
+                  .then(result => console.log(result))
+                  .catch(error => console.log('error', error));
+
+
+
+                // fetch("http://qr-code-app-v2.herokuapp.com/api/users", {
+                //   method: "POST",
+                //   headers: {
+                //     Accept: "application/json",
+                //     "Content-Type": "application/json"
+                //   },
+                //   body: JSON.stringify({
+                //     firstName: this.state.firstname,
+                //     lastName: this.state.lastName,
+                //     email: this.state.email,
+                //     password: this.state.password,
+                //     phone: this.state.phone,
+                //     hasAgreed: true
+                //   })
+                // })
+                //   .then(response => response.json())
+                //   .then(json => {
+                //     console.log(json)
+                //     // if (json.authentication == "success") {
+                //     //   this.props.navigation.navigate("Historique")
+                //     // } else {
+                //     //   this.props.navigation.navigate("Home")
+                //     // }
+                //   })
               }
             }}
             // onPress={() => this.props.navigation.navigate("Historique")}
@@ -141,8 +208,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "powderblue",
-    width: 200,
-    height: 44,
+    // width: 200,
+    // height: 44,
     padding: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -154,12 +221,13 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   input: {
-    width: 200,
-    height: 44,
-    borderWidth: 1,
+    // width: 200,
+    // height: 44,
+    // borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: "green",
     textAlign: "center",
-    marginVertical: 10,
-    borderRadius: 5
+    marginVertical: 10
+    // borderRadius: 5
   }
 })

@@ -10,33 +10,6 @@ import HistoriqueScreen from "./screens/Historique"
 import ScanIt from "./screens/ScanIt"
 import Profil from "./screens/Profil"
 
-// let user = {}
-// import NavigationBar from 'react-native-navbar-color'
-
-// NavigationBar.setColor('#ffab8e')
-// NavigationBar.setStatusBarColor('#ffab8e',false)
-
-
-
-
-
-
-// import Constants from 'expo-constants';
-
-//   const styles = StyleSheet.create({
-//     statusBar: {
-//       backgroundColor: "rgb(0, 200, 123)",
-//       height: Constants.statusBarHeight,
-//     }
-//   });
-
-// const MyComponent = () => {
-//   <View>
-//     <View style={styles.statusBar} />
-//     {/* rest of the content */}
-//   </View>
-// }
-
 
 // Les routes:
 const RootStack = createStackNavigator(
@@ -58,19 +31,3 @@ const RootStack = createStackNavigator(
 // L'application devient ces routes...
 export default createAppContainer(RootStack)
 
-// import { ApplicationProvider, Layout, Text } from "@ui-kitten/components"
-// import { mapping, light as lightTheme } from "@eva-design/eva"
-
-// const HomeScreen = () => (
-//   <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//     <Text category="h1">HOME</Text>
-//   </Layout>
-// )
-
-// const App = () => (
-//   <ApplicationProvider mapping={mapping} theme={lightTheme}>
-//     <HomeScreen />
-//   </ApplicationProvider>
-// )
-
-// export default App

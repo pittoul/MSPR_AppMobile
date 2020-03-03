@@ -8,118 +8,118 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  KeyboardAvoidingView
 } from "react-native"
+
+
+
+// MOCK USER:
+let mockUser = {"firstName":"admin","lastName":"admin","email":"admin@admin.fr","phone":"0101010101","hasAgreed":true,"discounts":["\/api\/discounts\/201","\/api\/discounts\/204","\/api\/discounts\/206"],"apiRoles":["\/api\/api_roles\/3"]}
+
 
 export default class Profil extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      utilisateur: null,
+      utilisateur: null
     }
   }
-
 
   componentDidMount() {
-
-    let infosUser = async () => {
-      try {
-        const value = await AsyncStorage.getItem("gadjio")
-        if (value !== null) {
-          // console.log("\nEmail du user loggué:")
-          // console.log(JSON.parse(value).email)
-          this.setState({
-            utilisateur: JSON.parse(value)
-          })
-        }
-      } catch (error) {
-        console.log("Error retrieving data")
-      }
-    }
-    infosUser()
+  //   let infosUser = async () => {
+  //     try {
+  //       const value = await AsyncStorage.getItem("gadjio")
+  //       if (value !== null) {
+  //         // console.log("\nEmail du user loggué:")
+  //         // console.log(JSON.parse(value).email)
+  //         this.setState({
+  //           utilisateur: JSON.parse(value)
+  //         })
+  //       }
+  //     } catch (error) {
+  //       console.log("Error retrieving data")
+  //     }
+  //   }
+  //   infosUser()
   }
 
-
-  
-
-  
   render() {
-    const { utilisateur } = this.state
-    if (utilisateur === null) {
-      return null
-    }
 
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        <View style={styles.container}>
-          <TextInput
-            value={this.state.utilisateur.email}
-            keyboardType="email-address"
-            onChangeText=""
-            placeholder={"email..."}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TextInput
-            value=""
-            onChangeText=""
-            placeholder={"Nouveau mot de passe..."}
-            secureTextEntry={true}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TextInput
-            value=""
-            onChangeText=""
-            placeholder={"Confirmez mot de passe..."}
-            secureTextEntry={true}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TextInput
-            value={this.state.utilisateur.firstName}
-            onChangeText=""
-            placeholder={"Prénom..."}
-            // secureTextEntry={true}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TextInput
-            value={this.state.utilisateur.lastName}
-            onChangeText=""
-            placeholder={"Nom..."}
-            // secureTextEntry={true}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TextInput
-            value={this.state.utilisateur.phone}
-            onChangeText=""
-            placeholder={"Numéro de mobile..."}
-            // secureTextEntry={true}
-            placeholderTextColor="gray"
-            style={styles.input}
-          />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navigation.navigate("Historique")}
-            // onPress={this.onLogin.bind(this)}
-          >
-            <Text style={styles.buttonText}> Enregistrer les modifs </Text>
-          </TouchableOpacity>
+      // <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <ScrollView style={{ flex: 1, backgroundColor: "white" }} >
+          <View style={styles.container}>
+            <TextInput
+            // mettre la value dans le place holder !!! Sinon c'est non modifiable !
+              value=""
+              keyboardType="email-address"
+              onChangeText=""
+              placeholder={mockUser.email}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TextInput
+              value=""
+              onChangeText=""
+              placeholder={"Nouveau mot de passe..."}
+              secureTextEntry={true}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TextInput
+              value=""
+              onChangeText=""
+              placeholder={"Confirmez mot de passe..."}
+              secureTextEntry={true}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TextInput
+              value=""
+              onChangeText=""
+              placeholder={mockUser.firstName}
+              // secureTextEntry={true}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TextInput
+              value=""
+              onChangeText=""
+              placeholder={mockUser.lastName}
+              // secureTextEntry={true}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TextInput
+              value=""
+              onChangeText=""
+              placeholder={mockUser.phone}
+              // secureTextEntry={true}
+              placeholderTextColor="gray"
+              style={styles.input}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Historique")}
+              // onPress={this.onLogin.bind(this)}
+            >
+              <Text style={styles.buttonText}> Enregistrer les modifs </Text>
+            </TouchableOpacity>
 
-          <Button
-            style={styles.buttonPetitText}
-            title="Accueil"
-            onPress={() => this.props.navigation.navigate("Home")}
-          />
-          <Button
-            style={styles.buttonPetitText}
-            title="Retour"
-            onPress={() => this.props.navigation.goBack()}
-          />
-        </View>
-      </ScrollView>
+            <Button
+              style={styles.buttonPetitText}
+              title="Accueil"
+              onPress={() => this.props.navigation.navigate("Home")}
+            />
+            <Button
+              style={styles.buttonPetitText}
+              title="Retour"
+              onPress={() => this.props.navigation.goBack()}
+            />
+          </View>
+        </ScrollView>
+      /* </KeyboardAvoidingView> */
     )
   }
 }
@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "powderblue",
-    width: 200,
-    height: 44,
+    // width: 200,
+    // height: 44,
     padding: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -150,13 +150,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   input: {
-    width: 200,
-    height: 44,
-    borderWidth: 1,
+    // width: 200,
+    // height: 44,
+    // borderWidth: 0,
+    borderBottomWidth: 1,
     borderColor: "green",
     marginVertical: 10,
     textAlign: "center",
-    marginVertical: 10,
-    borderRadius: 5
+    marginVertical: 10
+    // borderRadius: 5
   }
 })
