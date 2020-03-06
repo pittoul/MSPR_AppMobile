@@ -13,23 +13,24 @@ import {
   StatusBarIOS,
   StatusBar
 } from "react-native"
+import ValidationComponent from 'react-native-form-validator';
 
-export default class PageConnexion extends Component {
-  state = {
-    username: "",
-    password: ""
+export default class PageConnexion extends ValidationComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
   }
-
-  onLogin() {
-    const { username, password } = this.state
-    Alert.alert("Credentials", `username: ${username} + password: ${password}`)
-  }
-
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "rgb(0, 234, 12)" }}>
         <View style={styles.container}>
           <Text>Connexion : </Text>
+          <Text style={styles.errorMessage}>
+            {this.state.error}
+          </Text>
           <TextInput
             value={this.state.username}
             keyboardType="email-address"
@@ -37,7 +38,6 @@ export default class PageConnexion extends Component {
             placeholder="email..."
             placeholderTextColor="gray"
             style={styles.input}
-            // validators={['required', 'isEmail']}
           />
           <TextInput
             value={this.state.password}
@@ -46,68 +46,68 @@ export default class PageConnexion extends Component {
             secureTextEntry={true}
             placeholderTextColor="gray"
             style={styles.input}
-            // validators={['required', 'isString']}
           />
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              var myHeaders = new Headers()
-              myHeaders.append("Content-Type", "application/json")
+            onPress={() =>{
+              var myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
 
               var raw = JSON.stringify({
                 // username: "admin@admin.fr",
                 // password: "admin"
                 username: this.state.username,
                 password: this.state.password
-              })
+              });
 
               var requestOptions = {
                 method: "POST",
                 headers: myHeaders,
                 body: raw,
                 redirect: "follow"
-              }
+              };
 
               fetch(
-                "http://qr-code-app-v2.herokuapp.com/api/login_check",
-                requestOptions
+                  "http://qr-code-app-v2.herokuapp.com/api/login_check",
+                  requestOptions
               )
-                .then(response => response.json())
-                .then(result => {
-                  // console.log(result.token)
+                  .then(response => response.json())
+                  .then(result => {
+                    // console.log(result.token)
+                    let _storeToken = async () => {
+                      try {
+                        await AsyncStorage.setItem(
+                            "token",
+                            JSON.stringify(result.token)
+                        )
+                      } catch (error) {}
+                    };
+                    // pour lancer la sauvegarde du token:
+                    _storeToken();
 
-                  let _storeToken = async () => {
-                    try {
-                      await AsyncStorage.setItem(
-                        "token",
-                        JSON.stringify(result.token)
-                      )
-                    } catch (error) {}
-                  }
-                  // pour lancer la sauvegarde du token:
-                  _storeToken()
-
-                  let _storeLogin = async () => {
-                    try {
-                      await AsyncStorage.setItem(
-                        "login",
-                        JSON.stringify(this.state.username)
-                      )
-                    } catch (error) {}
-                  }
-                  // console.log(this.state.username)
-                  _storeLogin()
-                  // Redirection:
-                  this.props.navigation.navigate("Historique")
-                })
-                .catch(error => {
-                  this.props.navigation.navigate("Home")
-                })
-
-            
-            }}
-          >
+                    let _storeLogin = async () => {
+                      try {
+                        await AsyncStorage.setItem(
+                            "login",
+                            JSON.stringify(this.state.username)
+                        )
+                      } catch (error) {}
+                    };
+                    // console.log(this.state.username)
+                    _storeLogin();
+                    // Redirection:
+                    console.log("RESULT :",result.token);
+                    if (result.token || result.token !== undefined)
+                      this.props.navigation.navigate("Historique");
+                    else
+                      this.setState({error: "Adresse mail ou mot de passe incorrect."});
+                  })
+                  .catch(error => {
+                    console.log(error);
+                    this.props.navigation.navigate("Home")
+                  })}
+            }>
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
         </View>
@@ -120,7 +120,7 @@ const couleurs = {
   fond1: "rgb(100, 0, 0)",
   fond2: "rgb(145, 100, 0)",
   fond3: "rgb(134, 200, 100)"
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -155,5 +155,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 5,
     backgroundColor: couleurs.fond3
+  },
+  errorMessage: {
+    color: '#db1702'
   }
-})
+});
