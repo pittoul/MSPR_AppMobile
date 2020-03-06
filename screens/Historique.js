@@ -12,9 +12,9 @@ import React, { Component } from "react"
 
 
 // MOCK USER:
-let mockUser = {"firstName":"admin","lastName":"admin","email":"admin@admin.fr","phone":"0101010101","hasAgreed":true,"discounts":["\/api\/discounts\/201","\/api\/discounts\/204","\/api\/discounts\/206"],"apiRoles":["\/api\/api_roles\/3"]}
-console.log(mockUser.firstName)
-console.log(Object.keys(mockUser));
+// let mockUser = {"firstName":"admin","lastName":"admin","email":"admin@admin.fr","phone":"0101010101","hasAgreed":true,"discounts":["\/api\/discounts\/201","\/api\/discounts\/204","\/api\/discounts\/206"],"apiRoles":["\/api\/api_roles\/3"]}
+// console.log(mockUser.firstName)
+// console.log(Object.keys(mockUser));
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -55,75 +55,76 @@ export default class HomeScreen extends Component {
       try {
         const value = await AsyncStorage.getItem("login")
         if (value !== null) {
-          console.log("LOGIN FROM ASYNCSTORAGE:")
+          console.log("\nLOGIN FROM ASYNCSTORAGE:")
           console.log(JSON.parse(value))
           this.setState({
             login: JSON.parse(value)
           })
-          // this.setState({
-          //   user: mockUser
-          // })
+          _requeteGetUser()
         }
       } catch (error) {
         console.log("Error retrieving user")
       }
     }
+    // Récupération du login
     _infoLogin()
 
     // DEBUT REQUETE GET USER BY MAIL:
-    // let _requeteGetUser = () => {
-    //   console.log("avant requete")
-    //   var myHeaders = new Headers()
-    //   myHeaders.append("Accept", "application/json")
-    //   myHeaders.append("Content-Type", "application/json")
-    //   myHeaders.append("Authorization", "Bearer " + this.state.token)
-    //   var raw = JSON.stringify({ username: this.state.login })
-    //   var requestOptions = {
-    //     method: "GET",
-    //     headers: myHeaders,
-    //     body: raw,
-    //     redirect: "follow"
-    //   }
+    let _requeteGetUser = () => {
+      console.log("avant requete")
+      var myHeaders = new Headers()
+      myHeaders.append("Accept", "application/json")
+      myHeaders.append("Content-Type", "application/json")
+      myHeaders.append("Authorization", "Bearer " + this.state.token)
+      console.log('Le login est  : ' , this.state.login)
+      var raw = JSON.stringify({ username: this.state.login })
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      }
 
-    //   fetch(
-    //     "http://qr-code-app-v2.herokuapp.com/api/users/find_by_email",
-    //     requestOptions
-    //   )
-    //     .then(response => response.text())
-    //     .then(result => {
-    //       console.log(result)
+      fetch(
+        "http://qr-code-app-v2.herokuapp.com/api/users/find_by_email",
+        requestOptions
+      )
+        .then(response => response.text())
+        .then(result => {
+          console.log(result)
 
-    //       let _storeUser = async () => {
-    //         try {
-    //           await AsyncStorage.setItem("user", JSON.stringify(result))
-    //         } catch (error) {}
-    //       }
-    //       _storeUser()
-    //       console.log("Le fetch a eu lieu")
-    //     })
-    //     .catch(error => console.log("error", error))
-    // }
-    // _requeteGetUser()
+          let _storeUser = async () => {
+            try {
+              // await AsyncStorage.setItem("user", JSON.stringify(result))
+              await AsyncStorage.setItem("user", result)
+            } catch (error) {}
+          }
+          _storeUser()
+          console.log("Le fetch a eu lieu et le user loggué est : " , result.email)
+        })
+        .catch(error => console.log("error", error))
+    }
+    _requeteGetUser()
 
-    // let _user = async () => {
-    //   try {
-    //     const value = await AsyncStorage.getItem("user")
-    //     if (value !== null) {
-    //       console.log("\nUSER FROM ASYNCSTORAGE:")
-    //       console.log(JSON.parse(value))
-    //       this.setState({
-    //         user: JSON.parse(value)
-    //       })
-    //     }
-    //   } catch (error) {
-    //     console.log("Error retrieving Tableau de Tokens")
-    //   }
-    // }
-    // _user()
+    let _user = async () => {
+      try {
+        const value = await AsyncStorage.getItem("user")
+        if (value !== null) {
+          console.log("\nUSER FROM ASYNCSTORAGE:")
+          console.log(JSON.parse(value))
+          this.setState({
+            user: JSON.parse(value)
+          })
+        }
+      } catch (error) {
+        console.log("Error retrieving le User dans page PROFIL!")
+      }
+    }
+    _user()
 
-    this.setState({
-      user: mockUser
-    })
+    // this.setState({
+    //   user: mockUser
+    // })
 
     // let infosDiscounts = async () => {
     //   try {
@@ -155,7 +156,7 @@ export default class HomeScreen extends Component {
           <Text>{this.state.login}</Text>
           <Text>et le token est : </Text>
           <Text>{this.state.token}</Text>
-          <Text>{mockUser.firstName}</Text>
+          {/* <Text>{this.state.user}</Text> */}
           {/* <Text>
           Prénom: {this.state.utilisateur.firstName} / Nom:{" "}
           {this.state.utilisateur.lastName}
@@ -174,7 +175,7 @@ export default class HomeScreen extends Component {
             style={styles.button}
             onPress={() => this.props.navigation.navigate("Profil")}
           >
-            <Text style={styles.buttonText}>Settings</Text>
+            <Text style={styles.buttonText}>Voir/Modifier Profil</Text>
           </TouchableOpacity>
           <Text></Text>
           <TouchableOpacity
