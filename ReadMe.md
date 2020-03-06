@@ -93,5 +93,5 @@ dans le gestionnaire des tâches, arrêter tout ou partie de :
 - adb.exe
 - init.exe
 
-Ëventuellement, faire un :
+Éventuellement, faire un :
 ```npm start --reset-cache```
