@@ -9,6 +9,7 @@ import {
   AsyncStorage
 } from "react-native"
 import React, { Component } from "react"
+import { AuthSession } from "expo"
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -66,12 +67,10 @@ export default class HomeScreen extends Component {
 
     // DEBUT REQUETE GET USER BY MAIL:
     let _requeteGetUser = () => {
-      // console.log("avant requete")
       var myHeaders = new Headers()
       myHeaders.append("Accept", "application/json")
       myHeaders.append("Content-Type", "application/json")
       myHeaders.append("Authorization", "Bearer " + this.state.token)
-      // console.log("Le login est  : ", this.state.login)
       var raw = JSON.stringify({ username: this.state.login })
       var requestOptions = {
         method: "POST",
@@ -87,21 +86,16 @@ export default class HomeScreen extends Component {
         .then(response => response.text())
         .then(result => {
           // console.log(result)
-
           let _storeUser = async () => {
             try {
-              // await AsyncStorage.setItem("user", JSON.stringify(result))
               await AsyncStorage.setItem("user", result)
             } catch (error) {}
           }
           _storeUser()
-          // console.log(
-          //   "Le fetch a eu lieu et le user loggué est : ",
-          //   result.email
-          // )
         })
         .catch(error => console.log("error", error))
     }
+    // Verifier si user existe(si on a modifié le profil), sinon, faire la requete
     _requeteGetUser()
 
     let _user = async () => {
@@ -129,11 +123,11 @@ export default class HomeScreen extends Component {
           fetch("http://qr-code-app-v2.herokuapp.com" + element, requestOptions)
             .then(response => response.text())
             .then(result => {
-              // console.log('ZBEUB', JSON.parse(result).link)
+              // console.log(JSON.parse(result).link)
               discountsLinksProvisoire[
                 discountsLinksProvisoire.length
               ] = JSON.parse(result).link
-              // console.log('XXXXX', discountsLinksProvisoire);
+              // console.log(discountsLinksProvisoire);
               this.setState({
                 discountsLinks: discountsLinksProvisoire
               })
@@ -164,7 +158,7 @@ export default class HomeScreen extends Component {
           <Text>Vous bénéficiez déjà des discounts suivants : </Text>
           <Text></Text>
           {this.state.discountsLinks.map((item, key) => (
-            <Text>{item}</Text>
+            <Text style={styles.code}>{key}{item}</Text>
             )
           )}
           <Text></Text>
@@ -214,6 +208,17 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: "white",
+    borderRadius: 5,
+    marginBottom: 10
+  },
+  code: {
+    alignItems: "center",
+    backgroundColor: "pink",
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "yellow",
     borderRadius: 5,
     marginBottom: 10
   },

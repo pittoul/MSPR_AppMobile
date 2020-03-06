@@ -53,10 +53,7 @@ export default class PageConnexion extends ValidationComponent {
             onPress={() =>{
               var myHeaders = new Headers();
               myHeaders.append("Content-Type", "application/json");
-
               var raw = JSON.stringify({
-                // username: "admin@admin.fr",
-                // password: "admin"
                 username: this.state.username,
                 password: this.state.password
               });
@@ -74,7 +71,6 @@ export default class PageConnexion extends ValidationComponent {
               )
                   .then(response => response.json())
                   .then(result => {
-                    // console.log(result.token)
                     let _storeToken = async () => {
                       try {
                         await AsyncStorage.setItem(

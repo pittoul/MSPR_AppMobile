@@ -14,6 +14,7 @@ import Profil from "./screens/Profil"
 // Les routes:
 const RootStack = createStackNavigator(
   {
+    // Modèle : 
     // NomDuLien: NomDuScreenImporté
     Home: HomeScreen,
     PageConnexion: PageConnexion,
@@ -24,6 +25,7 @@ const RootStack = createStackNavigator(
     Profil: Profil
   },
   {
+    // Page par défaut :
     initialRouteName: "Home"
   }
 )

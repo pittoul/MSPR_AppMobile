@@ -2,22 +2,9 @@ import React, { useState, useEffect } from "react"
 import { Text, View, StyleSheet, Button, AsyncStorage } from "react-native"
 import { BarCodeScanner } from "expo-barcode-scanner"
 
-//
-
 export default function ScanIt() {
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
-  // let state = {
-  //   token: null,
-  //   login: null,
-  //   user: null,
-  //   discounts: [],
-  //   discountsLinks: []
-  // }
-
-  // componentDidMount() {
-
-  // }
 
   useEffect(() => {
     ;(async () => {
@@ -31,75 +18,57 @@ export default function ScanIt() {
     async function getUser() {
       const value = await AsyncStorage.getItem("user")
       console.log(JSON.parse(value))
-      alert(`Type de code ${type}\ndata du code : ${data} du user : ${JSON.parse(value).id}`)
+      alert(
+        `Type de code ${type}\ndata du code : ${data} du user : ${
+          JSON.parse(value).id
+        }`
+      )
 
-      let discountAAjouter = "/api/discounts/" + data;
-      let user = JSON.parse(value);
+      let discountAAjouter = "/api/discounts/" + data
+      let user = JSON.parse(value)
       let tabDisc = user.discounts
-      console.log('TAB',tabDisc)
+      console.log("TAB", tabDisc)
       tabDisc[tabDisc.length] = discountAAjouter
 
+      console.log("TAB", tabDisc)
+      user.discounts = tabDisc
 
-      console.log('TAB',tabDisc)
-      user.discounts = tabDisc;
-
-// Remettre user dans le storage
-let _storeUser = async () => {
-  try {
-    // await AsyncStorage.setItem("user", JSON.stringify(result))
-    await AsyncStorage.setItem("user", result)
-  } catch (error) {}
-}
-_storeUser()
-
-
-
-
-
+      // Remettre user dans le storage
+      let _storeUser = async () => {
+        try {
+          // await AsyncStorage.setItem("user", JSON.stringify(result))
+          await AsyncStorage.setItem("user", JSON.stringify(user))
+        } catch (error) {}
+      }
+      _storeUser()
 
       const valueT = await AsyncStorage.getItem("token")
-      let token =  JSON.parse(valueT)
+      let token = JSON.parse(valueT)
 
+      var myHeaders = new Headers()
+      myHeaders.append("Content-Type", "application/merge-patch+json")
+      myHeaders.append("Authorization", "Bearer " + token)
 
+      var raw = JSON.stringify(user)
 
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/merge-patch+json");
-      myHeaders.append("Authorization", "Bearer " + token);
-      
-      var raw = JSON.stringify(user);
-      
       var requestOptions = {
-        method: 'PATCH',
+        method: "PATCH",
         headers: myHeaders,
         body: raw,
-        redirect: 'follow'
-      };
-      
-      fetch("http://qr-code-app-v2.herokuapp.com/api/users/" + JSON.parse(value).id, requestOptions)
+        redirect: "follow"
+      }
+
+      fetch(
+        "http://qr-code-app-v2.herokuapp.com/api/users/" + JSON.parse(value).id,
+        requestOptions
+      )
         .then(response => response.text())
         .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-
-
-
-
-
-
+        .catch(error => console.log("error", error))
 
       return JSON.parse(value)
     }
- let user = getUser();
-    // let _user = async () => {
-    //   try {
-    //     const value = await AsyncStorage.getItem("user")
-    //     user = JSON.parse(value)
-    //   } catch (error) {
-    //     console.log("Error retrieving le User dans page SCAN!", error)
-    //   }
-    // }
-    // _user()
-
-    
+    let user = getUser()
   }
 
   if (hasPermission === null) {

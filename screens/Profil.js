@@ -29,11 +29,11 @@ export default class Profil extends Component {
     let _user = async () => {
       try {
         const value = await AsyncStorage.getItem("user")
-        // console.log("ICIIIIII", JSON.parse(value))
+        // console.log(JSON.parse(value))
         this.setState({
           user: JSON.parse(value)
         })
-        // console.log("DANS OBJET : ", this.state.user.firstName)
+        // console.log(this.state.user.firstName)
       } catch (error) {
         console.log("Error retrieving le User dans page PROFIL!")
       }
@@ -45,16 +45,7 @@ export default class Profil extends Component {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.container}>
-          {/* PAS LE MAIL !!!! */}
-          {/* <TextInput
-            // mettre la value dans le place holder !!! Sinon c'est non modifiable !
-            value={this.state.userName}
-            keyboardType="email-address"
-            onChangeText={username => this.setState({ username })}
-            placeholder={this.leUser.lastName}
-            placeholderTextColor="gray"
-            style={styles.input}
-          /> */}
+          <Text>VOTRE PROFIL</Text>
           <TextInput
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
@@ -117,8 +108,7 @@ export default class Profil extends Component {
           >
             <Text style={styles.buttonText}> Enregistrer les modifs</Text>
           </TouchableOpacity>
-
-          <Button
+           <Button
             style={styles.buttonPetitText}
             title="Accueil"
             onPress={() => this.props.navigation.navigate("Home")}
