@@ -12,6 +12,7 @@ import {
 import {validate} from 'validate.js';
 import ValidationComponent from 'react-native-form-validator';
 import constraints from "../constraints";
+import constraintsPassword from "../constraintsPassword";
 
 export default class Profil extends ValidationComponent {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class Profil extends ValidationComponent {
             confirmPassword: "",
             firstName: "",
             lastName: "",
-            phone: ""
+            phone: "",
+            
         };
         this._onPressButton = this._onPressButton.bind(this);
         this.reponse = {}
@@ -31,17 +33,20 @@ export default class Profil extends ValidationComponent {
 
     _onPressButton() {
         console.log(this.state.email);
-        const validationResult = validate({addressEmail: this.state.email}, constraints);
-        console.log(validationResult);
-        // validationResult is undefined if there are no errors
-        if (validationResult == undefined) {
+        const validationEmail = validate({addressEmail: this.state.email}, constraints);
+        const validationPassword = validate({motDePasse: this.state.confirmPassword, password: this.state.password},  constraints);
+        console.log(validationPassword);
+        // validationEmail is undefined if there are no errors
+        if (validationEmail == undefined && validationPassword == undefined) {
             //Inscription retour au menu
             console.log("STATE :", this.state);
             this.createUser();
             console.log("REPONSE : ", this.reponse);
             console.log("INSCRIPTION")
-        }
-        this.setState({errors: validationResult});
+        }else if (validationEmail !== undefined)
+            this.setState({errorsEmail: validationEmail});
+        else if (validationPassword !== undefined)
+            this.setState({errorsPassword: validationPassword});
     }
 
     render() {
@@ -49,7 +54,7 @@ export default class Profil extends ValidationComponent {
             <ScrollView style={{flex: 1, backgroundColor: "white"}}>
                 <View style={styles.container}>
                     <Text style={styles.errorMessage}>
-                        {this.getErrorMessages()}
+                        {this.getErrorEmail()}
                     </Text>
                     <TextInput
                         value={this.state.email}
@@ -59,6 +64,9 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+
+                    </Text>
                     <TextInput
                         value={this.state.password}
                         onChangeText={password => this.setState({password})}
@@ -67,6 +75,9 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+                        {this.getErrorPassword()}
+                    </Text>
                     <TextInput
                         value={this.state.confirmPassword}
                         onChangeText={confirmPassword => this.setState({confirmPassword})}
@@ -75,6 +86,9 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+
+                    </Text>
                     <TextInput
                         value={this.state.firstName}
                         onChangeText={firstName => this.setState({firstName})}
@@ -83,6 +97,9 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+
+                    </Text>
                     <TextInput
                         value={this.state.lastName}
                         onChangeText={lastName => this.setState({lastName})}
@@ -91,6 +108,9 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+
+                    </Text>
                     <TextInput
                         value={this.state.phone}
                         onChangeText={phone => this.setState({phone})}
@@ -99,11 +119,12 @@ export default class Profil extends ValidationComponent {
                         placeholderTextColor="gray"
                         style={styles.input}
                     />
+                    <Text style={styles.errorMessage}>
+
+                    </Text>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={this._onPressButton}
-
-                    >
+                        onPress={this._onPressButton}>
                         <Text style={styles.buttonText}> Valider </Text>
                     </TouchableOpacity>
                     <Button
@@ -111,21 +132,23 @@ export default class Profil extends ValidationComponent {
                         title="Accueil"
                         onPress={() => this.props.navigation.navigate("Home")}
                     />
-                    <Button
-                        style={styles.buttonPetitText}
-                        title="Retour"
-                        onPress={() => this.props.navigation.goBack()}
-                    />
+
                 </View>
             </ScrollView>
         );
     }
 
-    getErrorMessages(separator = "\n") {
-        const {errors} = this.state;
-        if (!errors) return [];
+    getErrorEmail(separator = "\n") {
+        const {errorsEmail} = this.state;
+        if (!errorsEmail) return [];
 
-        return Object.values(errors).map(it => it.join(separator)).join(separator);
+        return Object.values(errorsEmail).map(it => it.join(separator)).join(separator);
+    }
+    getErrorPassword(separator = "\n") {
+        const {errorsPassword} = this.state;
+        if (!errorsPassword) return [];
+
+        return Object.values(errorsPassword).map(it => it.join(separator)).join(separator);
     }
 
     createUser() {
@@ -140,13 +163,13 @@ export default class Profil extends ValidationComponent {
             .then(response => response.json())
             .then(json => {
                 this.reponse = json;
-                console.log("EMAIL :",this.reponse.email);
+                // On vérifie si l'email est bien renvoyé par l'API
+                //Si elle est bien renvoyé alors l'inscription à fonctionné
                 if (this.reponse.email === "" || this.reponse.email === null || this.reponse.email === undefined) {
                     alert("Erreur de l'inscription");
                     this.props.navigation.navigate('Home');
                 }else
                     this.props.navigation.navigate('Home');
-                console.log("REPONSE PROMISE :", this.reponse)
             })
     }
 }
