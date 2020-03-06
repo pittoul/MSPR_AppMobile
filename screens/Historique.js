@@ -10,20 +10,15 @@ import {
 } from "react-native"
 import React, { Component } from "react"
 
-
-// MOCK USER:
-// let mockUser = {"firstName":"admin","lastName":"admin","email":"admin@admin.fr","phone":"0101010101","hasAgreed":true,"discounts":["\/api\/discounts\/201","\/api\/discounts\/204","\/api\/discounts\/206"],"apiRoles":["\/api\/api_roles\/3"]}
-// console.log(mockUser.firstName)
-// console.log(Object.keys(mockUser));
-
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
       token: null,
       login: null,
-      user: null
-      // discounts: null
+      user: null,
+      discounts: [],
+      discountsLinks: []
     }
   }
 
@@ -38,8 +33,8 @@ export default class HomeScreen extends Component {
       try {
         const value = await AsyncStorage.getItem("token")
         if (value !== null) {
-          console.log("\nToken FROM ASYNCSTORAGE:")
-          console.log(JSON.parse(value))
+          // console.log("\nToken FROM ASYNCSTORAGE:")
+          // console.log(JSON.parse(value))
           this.setState({
             token: JSON.parse(value)
           })
@@ -55,8 +50,8 @@ export default class HomeScreen extends Component {
       try {
         const value = await AsyncStorage.getItem("login")
         if (value !== null) {
-          console.log("\nLOGIN FROM ASYNCSTORAGE:")
-          console.log(JSON.parse(value))
+          // console.log("\nLOGIN FROM ASYNCSTORAGE:")
+          // console.log(JSON.parse(value))
           this.setState({
             login: JSON.parse(value)
           })
@@ -71,12 +66,12 @@ export default class HomeScreen extends Component {
 
     // DEBUT REQUETE GET USER BY MAIL:
     let _requeteGetUser = () => {
-      console.log("avant requete")
+      // console.log("avant requete")
       var myHeaders = new Headers()
       myHeaders.append("Accept", "application/json")
       myHeaders.append("Content-Type", "application/json")
       myHeaders.append("Authorization", "Bearer " + this.state.token)
-      console.log('Le login est  : ' , this.state.login)
+      // console.log("Le login est  : ", this.state.login)
       var raw = JSON.stringify({ username: this.state.login })
       var requestOptions = {
         method: "POST",
@@ -91,7 +86,7 @@ export default class HomeScreen extends Component {
       )
         .then(response => response.text())
         .then(result => {
-          console.log(result)
+          // console.log(result)
 
           let _storeUser = async () => {
             try {
@@ -100,7 +95,10 @@ export default class HomeScreen extends Component {
             } catch (error) {}
           }
           _storeUser()
-          console.log("Le fetch a eu lieu et le user loggué est : " , result.email)
+          // console.log(
+          //   "Le fetch a eu lieu et le user loggué est : ",
+          //   result.email
+          // )
         })
         .catch(error => console.log("error", error))
     }
@@ -109,41 +107,49 @@ export default class HomeScreen extends Component {
     let _user = async () => {
       try {
         const value = await AsyncStorage.getItem("user")
-        if (value !== null) {
-          console.log("\nUSER FROM ASYNCSTORAGE:")
-          console.log(JSON.parse(value))
+        // console.log("ICIIIIII", JSON.parse(value))
+        this.setState({
+          user: JSON.parse(value)
+        })
+        // console.log("DANS OBJET : ", this.state.user.discounts)
+        let tabDiscounts = this.state.user.discounts
+        let discountsLinksProvisoire = []
+        // console.log(tabDiscounts)
+        tabDiscounts.forEach(element => {
+          var myHeaders = new Headers()
+          myHeaders.append("Content-Type", "application/json")
+          myHeaders.append("Authorization", "Bearer " + this.state.token)
+          var file = ""
+          var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            body: file,
+            redirect: "follow"
+          }
+          fetch("http://qr-code-app-v2.herokuapp.com" + element, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+              // console.log('ZBEUB', JSON.parse(result).link)
+              discountsLinksProvisoire[
+                discountsLinksProvisoire.length
+              ] = JSON.parse(result).link
+              // console.log('XXXXX', discountsLinksProvisoire);
+              this.setState({
+                discountsLinks: discountsLinksProvisoire
+              })
+            })
+            .catch(error => console.log("error", error))
           this.setState({
-            user: JSON.parse(value)
+            discounts: tabDiscounts
           })
-        }
+          // console.log('DISCOUTSLINKS : ', this.state.discountsLinks)
+          // console.log('TRUC', element)
+        })
       } catch (error) {
-        console.log("Error retrieving le User dans page PROFIL!")
+        console.log("Error retrieving le User dans page PROFIL!", error)
       }
     }
     _user()
-
-    // this.setState({
-    //   user: mockUser
-    // })
-
-    // let infosDiscounts = async () => {
-    //   try {
-    //     const value = await AsyncStorage.getItem("discounts")
-    //     if (value !== null) {
-    //       // console.log("\nDiscounts du user loggué:")
-    //       // console.log(JSON.parse(value).email)
-    //       this.setState({
-    //         discounts: JSON.parse(value)
-    //       })
-    //     }
-    //   } catch (error) {
-    //     console.log("Error retrieving data")
-    //   }
-    // }
-
-    // Initialisation des variables 'this.state : user et discounts'
-    // J'imagine que le _ est pour les variables qui sont des fonctions
-    // infosDiscounts()
   }
 
   render() {
@@ -154,16 +160,14 @@ export default class HomeScreen extends Component {
           <Text></Text>
           <Text> INFOS USER EN LOCAL STORAGE: </Text>
           <Text>{this.state.login}</Text>
-          <Text>et le token est : </Text>
-          <Text>{this.state.token}</Text>
-          {/* <Text>{this.state.user}</Text> */}
-          {/* <Text>
-          Prénom: {this.state.utilisateur.firstName} / Nom:{" "}
-          {this.state.utilisateur.lastName}
-        </Text>
-        <Text>tél: {this.state.utilisateur.phone}</Text>
-        <Text>Discounts : {typeof this.state.discounts}</Text> */}
-          <Text>ici</Text>
+          <Text></Text>
+          <Text>Vous bénéficiez déjà des discounts suivants : </Text>
+          <Text></Text>
+          {this.state.discountsLinks.map((item, key) => (
+            <Text>{item}</Text>
+            )
+          )}
+          <Text></Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.props.navigation.navigate("ScanIt")}
