@@ -16,6 +16,9 @@ export default function ScanIt() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     // fetch le discount vers la bdd
+
+
+    
     alert(`Type de code ${type}\ndata du code : ${data}`);
   };
 

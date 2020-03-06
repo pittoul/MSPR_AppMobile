@@ -75,7 +75,7 @@ export default class PageConnexion extends Component {
               )
                 .then(response => response.json())
                 .then(result => {
-                  console.log(result.token)
+                  // console.log(result.token)
 
                   let _storeToken = async () => {
                     try {
@@ -96,6 +96,7 @@ export default class PageConnexion extends Component {
                       )
                     } catch (error) {}
                   }
+                  // console.log(this.state.username)
                   _storeLogin()
                   // Redirection:
                   this.props.navigation.navigate("Historique")
