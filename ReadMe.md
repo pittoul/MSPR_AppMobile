@@ -91,7 +91,7 @@ En cas de bug, si "npm install xxxxx" ne se lance pas, de connexion internet biz
 dans le gestionnaire des tâches, arrêter tout ou partie de :
 - adb32.exe
 - adb.exe
--init.exe
+- init.exe
 
 Ëventuellement, faire un :
 ```npm start --reset-cache```
