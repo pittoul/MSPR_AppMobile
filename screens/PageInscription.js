@@ -12,7 +12,6 @@ import {
 import {validate} from 'validate.js';
 import ValidationComponent from 'react-native-form-validator';
 import constraints from "../constraints";
-import constraintsPassword from "../constraintsPassword";
 
 export default class Profil extends ValidationComponent {
     constructor(props) {
@@ -24,8 +23,7 @@ export default class Profil extends ValidationComponent {
             confirmPassword: "",
             firstName: "",
             lastName: "",
-            phone: "",
-            
+            phone: ""
         };
         this._onPressButton = this._onPressButton.bind(this);
         this.reponse = {}
