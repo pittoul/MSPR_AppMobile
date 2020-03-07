@@ -11,13 +11,13 @@ import { StackNavigator } from "react-navigation"
 import { createAppContainer } from "react-navigation"
 import { createStackNavigator } from "react-navigation-stack"
 import coca from "../assets/coca.jpg"
+import logo from "../assets/logo.png"
 
 export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.grosTexte}>Offres-Top</Text>
-
+        <Image style={{ width: 150, height: 150 }} source={logo} />
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.props.navigation.navigate("PageConnexion")}
@@ -42,7 +42,7 @@ export default class HomeScreen extends Component {
         </TouchableOpacity>
         <Text></Text>
 
-        <Text>Bouton provisoire:</Text>
+        {/* <Text>Bouton provisoire:</Text>
         <TouchableOpacity
           style={styles.buttonPetit}
           title="Informations Légales"
@@ -50,9 +50,9 @@ export default class HomeScreen extends Component {
         >
           <Text style={styles.buttonPetitText}>-Historique des promos-</Text>
         </TouchableOpacity>
-        <Text></Text>
+        <Text></Text> */}
 
-        <Image style={{ width: 150, height: 150 }} source={coca} />
+        <Image style={{ width: 150, height: 150 }} source={logo} />
         {/* <Image
           style={{ width: 220, height: 75 }}
           source={require("../assets/williamS.png")}

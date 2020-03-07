@@ -11,9 +11,12 @@ import {
   AsyncStorage,
   StatusBarPropsIOS,
   StatusBarIOS,
-  StatusBar
+  StatusBar,
+  Image
 } from "react-native"
 import ValidationComponent from 'react-native-form-validator';
+import logo from "../assets/logo.png"
+
 
 export default class PageConnexion extends ValidationComponent {
   constructor(props) {
@@ -25,7 +28,9 @@ export default class PageConnexion extends ValidationComponent {
   }
   render() {
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "rgb(0, 234, 12)" }}>
+      <ScrollView style={{ flex: 1}}>
+        <Image style={{ width: 150, height: 150 }} source={logo} />
+        
         <View style={styles.container}>
           <Text>Connexion : </Text>
           <Text style={styles.errorMessage}>

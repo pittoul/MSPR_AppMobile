@@ -10,6 +10,8 @@ import {
 } from "react-native"
 import React, { Component } from "react"
 import { AuthSession } from "expo"
+import logo from "../assets/logo.png"
+
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -148,12 +150,12 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "rgb(0, 234, 12)" }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text style={styles.titleText}>PAGE PRINCIPALE</Text>
-          <Text></Text>
-          <Text> INFOS USER EN LOCAL STORAGE: </Text>
-          <Text>{this.state.login}</Text>
+          {/* <Text style={styles.titleText}>PAGE PRINCIPALE</Text> */}
+          {/* <Text></Text> */}
+          {/* <Text> INFOS USER EN LOCAL STORAGE: </Text> */}
+          <Text>Bienvenue {this.state.login} ! </Text>
           <Text></Text>
           <Text>Vous bénéficiez déjà des discounts suivants : </Text>
           <Text></Text>
@@ -162,6 +164,8 @@ export default class HomeScreen extends Component {
             )
           )}
           <Text></Text>
+        <Image style={{ width: 150, height: 150 }} source={logo} />
+        <Text></Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.props.navigation.navigate("ScanIt")}
