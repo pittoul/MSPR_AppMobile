@@ -112,6 +112,13 @@ export default class Profil extends ValidationComponent {
           </TouchableOpacity>
           <Text style={styles.espacement} ></Text>
           <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Image style={{ width: 40, height: 40 }} source={logo} />
+          <Text style={styles.espacement} ></Text>
 
 
         </Form>

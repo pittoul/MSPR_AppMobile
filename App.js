@@ -16,8 +16,23 @@ const RootStack = createStackNavigator(
   {
     // Modèle : 
     // NomDuLien: NomDuScreenImporté
-    Home: HomeScreen,
-    PageConnexion: PageConnexion,
+    Home: {
+      screen: HomeScreen, 
+      navigationOptions: {
+      header: null,
+      title: "Accueil",
+    }
+  },
+    PageConnexion: {
+      screen: PageConnexion,
+      navigationOptions: {
+      header: null,
+
+        // headerHomeTitle : "zboub",
+        // headerLeft: "zzzzzz",
+        title: "Retour"
+      }
+    },
     PageInscription: PageInscription,
     InfosLegales: InfosLegalesScreen,
     Historique: HistoriqueScreen,

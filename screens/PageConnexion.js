@@ -30,6 +30,7 @@ export default class PageConnexion extends ValidationComponent {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+          <Text style={styles.espacement}></Text>
           <Text style={styles.titre1}>Connexion : </Text>
           <Text style={styles.errorMessage}>{this.state.error}</Text>
           <TextInput
@@ -119,6 +120,14 @@ export default class PageConnexion extends ValidationComponent {
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
           <Image style={{ width: 200, height: 200 }} source={logo} />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              this.props.navigation.navigate("Home")
+            }}
+          >
+            <Text style={styles.buttonText}> Retour </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     )
