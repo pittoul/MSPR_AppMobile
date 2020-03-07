@@ -1,5 +1,6 @@
 import React, {Component} from "react"
 import {ScrollView} from "react-native-gesture-handler"
+import {Form, TextValidator} from 'react-native-validator-form';
 import {
     View,
     Text,
@@ -7,11 +8,10 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Alert
+    Alert, Image
 } from "react-native"
-import {validate} from 'validate.js';
 import ValidationComponent from 'react-native-form-validator';
-import constraints from "../constraints";
+import logo from "../assets/logo.png";
 
 export default class Profil extends ValidationComponent {
     constructor(props) {
@@ -25,130 +25,101 @@ export default class Profil extends ValidationComponent {
             lastName: "",
             phone: ""
         };
-        this._onPressButton = this._onPressButton.bind(this);
         this.reponse = {}
     }
 
-    _onPressButton() {
-        console.log(this.state.email);
-        const validationEmail = validate({addressEmail: this.state.email}, constraints);
-        const validationPassword = validate({motDePasse: this.state.confirmPassword, password: this.state.password},  constraints);
-        console.log(validationPassword);
-        // validationEmail is undefined if there are no errors
-        if (validationEmail == undefined && validationPassword == undefined) {
-            //Inscription retour au menu
-            console.log("STATE :", this.state);
-            this.createUser();
-            console.log("REPONSE : ", this.reponse);
-            console.log("INSCRIPTION")
-        }else if (validationEmail !== undefined)
-            this.setState({errorsEmail: validationEmail});
-        else if (validationPassword !== undefined)
-            this.setState({errorsPassword: validationPassword});
+    submit = () => {
+        this.createUser();
+    };
+
+    handleSubmit = () => {
+        this.refs.form.submit();
+    };
+
+    UNSAFE_componentWillMount() {
+        // custom rule will have name 'isPasswordMatch'
+        Form.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== this.state.password) {
+                return false;
+            }
+            return true;
+        });
     }
 
     render() {
         return (
-            <ScrollView style={{flex: 1, backgroundColor: "white"}}>
-                <View style={styles.container}>
-                    <Text style={styles.errorMessage}>
-                        {this.getErrorEmail()}
-                    </Text>
-                    <TextInput
-                        value={this.state.email}
-                        keyboardType="email-address"
-                        onChangeText={email => this.setState({email})}
-                        placeholder={"email..."}
-                        placeholderTextColor="gray"
-                        style={styles.input}
-                    />
-                    <Text style={styles.errorMessage}>
 
-                    </Text>
-                    <TextInput
-                        value={this.state.password}
-                        onChangeText={password => this.setState({password})}
-                        placeholder={"password..."}
-                        secureTextEntry={true}
-                        placeholderTextColor="gray"
+            <ScrollView style={{flex: 1, backgroundColor: "white"}}>
+
+                <Form
+                    ref="form"
+                    onSubmit={this.submit}
+                    style={styles.container}
+                >
+                    <Image style={{width: 90, height: 90}} source={logo}/>
+                    <TextValidator
+                        validators={['required', 'isEmail']}
+                        errorMessages={['Ce champ est requis', 'Adresse mail incorrecte']}
+                        placeholder={"Adresse mail"}
+                        keyboardType="email-address"
+                        value={this.state.email}
+                        onChangeText={email => this.setState({email})}
                         style={styles.input}
                     />
-                    <Text style={styles.errorMessage}>
-                        {this.getErrorPassword()}
-                    </Text>
-                    <TextInput
+                    <TextValidator
+                        secureTextEntry
+                        validators={['required']}
+                        errorMessages={['Ce champ est requis.']}
+                        type="text"
+                        value={this.state.password}
+                        placeholder={"Mot de passe"}
+                        onChangeText={password => this.setState({password})}
+                        style={styles.input}
+                    />
+                    <TextValidator
+                        secureTextEntry
+                        validators={['isPasswordMatch', 'required']}
+                        errorMessages={['Mot de passe différent.', 'Ce champ est requis.']}
+                        placeholder={"Confirmation"}
                         value={this.state.confirmPassword}
                         onChangeText={confirmPassword => this.setState({confirmPassword})}
-                        placeholder={"confirmPassword..."}
-                        secureTextEntry={true}
-                        placeholderTextColor="gray"
                         style={styles.input}
                     />
-                    <Text style={styles.errorMessage}>
-
-                    </Text>
-                    <TextInput
+                    <TextValidator
+                        validators={['required']}
+                        errorMessages={['Ce champ est requis']}
+                        placeholder={"Prénom"}
                         value={this.state.firstName}
                         onChangeText={firstName => this.setState({firstName})}
-                        placeholder={"firstName..."}
-                        // secureTextEntry={true}
-                        placeholderTextColor="gray"
                         style={styles.input}
                     />
-                    <Text style={styles.errorMessage}>
-
-                    </Text>
-                    <TextInput
+                    <TextValidator
+                        validators={['required']}
+                        errorMessages={['Ce champ est requis']}
+                        placeholder={"Nom"}
                         value={this.state.lastName}
                         onChangeText={lastName => this.setState({lastName})}
-                        placeholder={"lastName..."}
-                        // secureTextEntry={true}
-                        placeholderTextColor="gray"
                         style={styles.input}
                     />
-                    <Text style={styles.errorMessage}>
-
-                    </Text>
-                    <TextInput
+                    <TextValidator
+                        validators={['required', 'isNumber']}
+                        errorMessages={['Ce champ est requis', "Ce n'est pas un numéro"]}
+                        placeholder={"Téléphone"}
+                        keyboardType="phone-pad"
                         value={this.state.phone}
                         onChangeText={phone => this.setState({phone})}
-                        placeholder={"Numéro de mobile..."}
-                        // secureTextEntry={true}
-                        placeholderTextColor="gray"
                         style={styles.input}
                     />
-                    <Text style={styles.errorMessage}>
 
-                    </Text>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={this._onPressButton}>
+                        onPress={this.handleSubmit}>
                         <Text style={styles.buttonText}> Valider </Text>
                     </TouchableOpacity>
-                    <Button
-                        style={styles.buttonPetitText}
-                        title="Accueil"
-                        onPress={() => this.props.navigation.navigate("Home")}
-                    />
-
-                </View>
+                </Form>
             </ScrollView>
         );
     }
-
-    getErrorEmail(separator = "\n") {
-        const {errorsEmail} = this.state;
-        if (!errorsEmail) return [];
-
-        return Object.values(errorsEmail).map(it => it.join(separator)).join(separator);
-    }
-    getErrorPassword(separator = "\n") {
-        const {errorsPassword} = this.state;
-        if (!errorsPassword) return [];
-
-        return Object.values(errorsPassword).map(it => it.join(separator)).join(separator);
-    }
-
     createUser() {
         fetch("http://qr-code-app-v2.herokuapp.com/api/users", {
             method: "POST",
@@ -163,11 +134,14 @@ export default class Profil extends ValidationComponent {
                 this.reponse = json;
                 // On vérifie si l'email est bien renvoyé par l'API
                 //Si elle est bien renvoyé alors l'inscription à fonctionné
-                if (this.reponse.email === "" || this.reponse.email === null || this.reponse.email === undefined) {
-                    alert("Erreur de l'inscription");
+                console.log("1 : ", this.reponse.detail);
+                // console.log("2 : ", this.reponse.detail.email);
+                // console.log("3 : ", this.reponse.violations[0].message);
+                if (this.reponse.detail) {
+                    alert(this.reponse.violations[0].message);
+                } else if (this.reponse.detail === undefined){
                     this.props.navigation.navigate('Home');
-                }else
-                    this.props.navigation.navigate('Home');
+                }
             })
     }
 }
@@ -198,13 +172,13 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     input: {
-        // width: 200,
-        // height: 44,
+        width: 150,
+        height: 46,
         // borderWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: "green",
+        borderBottomWidth: 0,
+        // borderColor: "green",
         textAlign: "center",
-        marginVertical: 10
+        marginVertical: 15
         // borderRadius: 5
     },
     errorMessage: {
