@@ -80,12 +80,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12
   },
   buttonText: {
+    fontWeight: "100",
     fontSize: 20,
-    color: "#fff"
+    color: "rgb(0, 0, 0)"
   },
   buttonPetitText: {
+    fontWeight: "100",
     fontSize: 10,
-    color: "#bfcf"
+    color: "rgb(0, 0, 0)"
     // marginBottom:10,
     // paddingBottom: 5
   },

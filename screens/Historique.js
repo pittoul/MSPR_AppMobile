@@ -155,12 +155,12 @@ export default class HomeScreen extends Component {
           {/* <Text style={styles.titleText}>PAGE PRINCIPALE</Text> */}
           {/* <Text></Text> */}
           {/* <Text> INFOS USER EN LOCAL STORAGE: </Text> */}
-          <Text>Bienvenue {this.state.login} ! </Text>
+          <Text style={styles.texte}>Bienvenue {this.state.login} ! </Text>
           <Text></Text>
           <Text>Vous bénéficiez déjà des discounts suivants : </Text>
           <Text></Text>
           {this.state.discountsLinks.map((item, key) => (
-            <Text key={item.key} style={styles.code}>{item}</Text>
+            <Text key={key} style={styles.code}>{item}</Text>
             )
           )}
           <Text></Text>
@@ -201,6 +201,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   titleText: {
+    fontWeight: "100",
+    fontSize: 32,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -216,10 +218,12 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   code: {
+    fontWeight: "100",
+    
     alignItems: "center",
     backgroundColor: "pink",
     width: 200,
-    height: 44,
+    height: "auto",
     padding: 10,
     // borderWidth: 1,
     // borderColor: "yellow",
@@ -227,10 +231,15 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   buttonText: {
+    fontWeight: "100",
     alignItems: "center",
     justifyContent: "center"
   },
+  texte: {
+    fontWeight: "100",
+  },
   input: {
+    fontWeight: "100",
     width: 200,
     height: 44,
     borderWidth: 1,
