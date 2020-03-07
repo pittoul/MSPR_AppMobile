@@ -160,7 +160,7 @@ export default class HomeScreen extends Component {
           <Text>Vous bénéficiez déjà des discounts suivants : </Text>
           <Text></Text>
           {this.state.discountsLinks.map((item, key) => (
-            <Text style={styles.code}>{key}{item}</Text>
+            <Text key={item.key} style={styles.code}>{item}</Text>
             )
           )}
           <Text></Text>
@@ -221,8 +221,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 44,
     padding: 10,
-    borderWidth: 1,
-    borderColor: "yellow",
+    // borderWidth: 1,
+    // borderColor: "yellow",
     borderRadius: 5,
     marginBottom: 10
   },
