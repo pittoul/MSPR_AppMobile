@@ -155,9 +155,9 @@ export default class HomeScreen extends Component {
           {/* <Text style={styles.titleText}>PAGE PRINCIPALE</Text> */}
           {/* <Text></Text> */}
           {/* <Text> INFOS USER EN LOCAL STORAGE: </Text> */}
-          <Text style={styles.texte}>Bienvenue {this.state.login} ! </Text>
+          <Text style={styles.texte, styles.titre1}>Bienvenue {this.state.login} ! </Text>
           <Text></Text>
-          <Text>Vous bénéficiez déjà des discounts suivants : </Text>
+          <Text style={styles.texte}>Vous bénéficiez déjà des discounts suivants : </Text>
           <Text></Text>
           {this.state.discountsLinks.map((item, key) => (
             <Text key={key} style={styles.code}>{item}</Text>
@@ -194,6 +194,12 @@ export default class HomeScreen extends Component {
     )
   }
 }
+const couleurs = {
+  fond1: "rgb(100, 0, 0)",
+  fond2: "rgb(145, 100, 0)",
+  fond3: "rgba(134, 200, 100, 0.3)"
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -206,44 +212,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "powderblue",
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "white",
-    borderRadius: 5,
-    marginBottom: 10
+  titre1: {
+    fontWeight: "100",
+    fontSize: 32
   },
+  
   code: {
     fontWeight: "100",
-    
-    alignItems: "center",
-    backgroundColor: "pink",
-    width: 200,
     height: "auto",
     padding: 10,
-    // borderWidth: 1,
-    // borderColor: "yellow",
-    borderRadius: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    borderRadius: 10,
+    backgroundColor: couleurs.fond3,
+    // borderTopLeftRadius: 100,
+    // borderBottomLeftRadius: 50,
+    // borderBottomRightRadius: 50,
+    borderWidth: 1
+  },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 250,
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    padding: 10,
+    // borderRadius: 5,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderStyle: "solid",
+    borderColor: "rgb(0, 0, 0)",
+    borderWidth: 1.5
   },
   buttonText: {
     fontWeight: "100",
-    alignItems: "center",
-    justifyContent: "center"
+    fontSize: 20,
+    color: "rgb(0, 0, 0)"
   },
   texte: {
     fontWeight: "100",
-  },
-  input: {
-    fontWeight: "100",
-    width: 200,
-    height: 44,
-    borderWidth: 1,
-    borderColor: "green",
-    marginVertical: 10
   }
 })

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { Text, View, StyleSheet, Button, AsyncStorage } from "react-native"
 import { BarCodeScanner } from "expo-barcode-scanner"
-
+/**
+ * 
+ * 
+ * Un QR CODE CONTIENT L'ID DU DISCOUNT 
+ * 
+ * 
+ * 
+ */
 export default function ScanIt() {
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)

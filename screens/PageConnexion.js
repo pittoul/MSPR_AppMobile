@@ -30,7 +30,6 @@ export default class PageConnexion extends ValidationComponent {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
-
           <Text style={styles.titre1}>Connexion : </Text>
           <Text style={styles.errorMessage}>{this.state.error}</Text>
           <TextInput
@@ -49,7 +48,7 @@ export default class PageConnexion extends ValidationComponent {
             placeholderTextColor="gray"
             style={styles.input}
           />
-
+          <Text style={styles.espacement}></Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -120,7 +119,6 @@ export default class PageConnexion extends ValidationComponent {
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
           <Image style={{ width: 200, height: 200 }} source={logo} />
-
         </View>
       </ScrollView>
     )
@@ -130,7 +128,7 @@ export default class PageConnexion extends ValidationComponent {
 const couleurs = {
   fond1: "rgb(100, 0, 0)",
   fond2: "rgb(145, 100, 0)",
-  fond3: "rgb(134, 200, 100)"
+  fond3: "rgba(134, 200, 100, 0.3)"
 }
 
 const styles = StyleSheet.create({
@@ -141,7 +139,7 @@ const styles = StyleSheet.create({
   },
   titre1: {
     fontWeight: "100",
-    fontSize: 32,
+    fontSize: 32
   },
   titleText: {
     alignItems: "center",
@@ -149,29 +147,43 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    width: 200,
-    height: 44,
+    justifyContent: "center",
+    width: 250,
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: 10,
-    borderWidth: 1,
-    borderColor: "white",
     borderRadius: 5,
-    marginBottom: 10,
-    backgroundColor: couleurs.fond2
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderStyle: "solid",
+    borderColor: "rgb(0, 0, 0)",
+    borderWidth: 1.5
   },
   buttonText: {
     fontWeight: "100",
     alignItems: "center",
     justifyContent: "center"
   },
+  espacement: {
+    paddingTop: 20
+  },
   input: {
     fontWeight: "100",
-    width: 200,
+    minWidth: 200,
     height: 44,
-    borderWidth: 1,
+    // borderWidth: 1,
     textAlign: "center",
     marginVertical: 10,
     borderRadius: 5,
-    backgroundColor: couleurs.fond3
+    backgroundColor: couleurs.fond3,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderStyle: "solid",
+    borderColor: "rgb(0, 0, 0)",
+    borderWidth: 1.5
   },
   errorMessage: {
     color: "#db1702"

@@ -45,7 +45,7 @@ export default class Profil extends Component {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.container}>
-          <Text>VOTRE PROFIL</Text>
+          <Text style={styles.titleText}>VOTRE PROFIL</Text>
           <TextInput
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
@@ -106,24 +106,28 @@ export default class Profil extends Component {
               }
             }}
           >
-            <Text style={styles.buttonText}> Enregistrer les modifs</Text>
+            <Text style={styles.buttonText}>Enregistrer les modifs</Text>
           </TouchableOpacity>
-           <Button
-            style={styles.buttonPetitText}
+          <Button
+            style={styles.buttonText}
             title="Accueil"
             onPress={() => this.props.navigation.navigate("Home")}
           />
-          <Button
+            {/*<Button
             style={styles.buttonPetitText}
             title="Retour"
             onPress={() => this.props.navigation.goBack()}
-          />
+          /> */}
         </View>
       </ScrollView>
     )
   }
 }
-
+const couleurs = {
+  fond1: "rgb(100, 0, 0)",
+  fond2: "rgb(145, 100, 0)",
+  fond3: "rgba(134, 200, 100, 0.3)"
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -131,28 +135,40 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   titleText: {
+    fontWeight: "100",
+    fontSize: 32,
     alignItems: "center",
     justifyContent: "center"
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "powderblue",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "white",
-    borderRadius: 5,
-    marginBottom: 10
-  },
+  // button: {
+  //   alignItems: "center",
+  //   backgroundColor: "powderblue",
+  //   padding: 10,
+  //   borderWidth: 1,
+  //   borderColor: "white",
+  //   borderRadius: 5,
+  //   marginBottom: 10
+  // },
   buttonText: {
-    alignItems: "center",
-    justifyContent: "center"
+    fontWeight: "100",
+    fontSize: 20,
+    color: "rgb(0, 0, 0)"
   },
   input: {
-    width: 200,
-    borderBottomWidth: 1,
-    borderColor: "green",
-    marginVertical: 10,
+    fontWeight: "100",
+    minWidth: 220,
+    height: 44,
+    // borderWidth: 1,
     textAlign: "center",
-    marginVertical: 10
+    marginVertical: 10,
+    borderRadius: 5,
+    backgroundColor: couleurs.fond3,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderStyle: "solid",
+    borderColor: "rgb(0, 0, 0)",
+    borderWidth: 1.5
   }
 })

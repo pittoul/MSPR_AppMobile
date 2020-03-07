@@ -24,7 +24,7 @@ export default class HomeScreen extends Component {
         >
           <Text style={styles.buttonText}>Se Connecter</Text>
         </TouchableOpacity>
-        <Text>ou</Text>
+        <Text style={styles.espacement}></Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.props.navigation.navigate("PageInscription")}
@@ -38,7 +38,7 @@ export default class HomeScreen extends Component {
           title="Informations Légales"
           onPress={() => this.props.navigation.navigate("InfosLegales")}
         >
-          <Text style={styles.buttonPetitText}>Informations Légales</Text>
+          <Text style={styles.buttonPetitText}>- Informations Légales -</Text>
         </TouchableOpacity>
         <Text></Text>
 
@@ -69,15 +69,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  espacement: {
+    paddingTop: 10
+  },
   grosTexte: {
     fontSize: 20,
     fontWeight: "bold"
   },
   button: {
-    backgroundColor: "#acbf",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 250,
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: 10,
     borderRadius: 5,
-    borderTopRightRadius: 12
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderStyle: "solid",
+    borderColor: "rgb(0, 0, 0)",
+    borderWidth: 1.5
   },
   buttonText: {
     fontWeight: "100",
@@ -92,8 +104,11 @@ const styles = StyleSheet.create({
     // paddingBottom: 5
   },
   buttonPetit: {
-    backgroundColor: "#acbf",
+    // backgroundColor: "#acbf",
+    paddingTop: 30,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    borderBottomWidth: 1
+    // borderTopWidth: 1
   }
 })
