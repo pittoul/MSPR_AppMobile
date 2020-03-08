@@ -12,7 +12,6 @@ import React, { Component } from "react"
 import { AuthSession } from "expo"
 import logo from "../assets/logo.png"
 
-
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props)
@@ -31,6 +30,7 @@ export default class HomeScreen extends Component {
    *
    */
   componentDidMount() {
+  
     // Création des variables (qui sont des fonctions !)
     let _infosToken = async () => {
       try {
@@ -110,7 +110,7 @@ export default class HomeScreen extends Component {
         // console.log("DANS OBJET : ", this.state.user.discounts)
         let tabDiscounts = this.state.user.discounts
         let discountsLinksProvisoire = []
-        // console.log(tabDiscounts)
+        console.log(tabDiscounts)
         tabDiscounts.forEach(element => {
           var myHeaders = new Headers()
           myHeaders.append("Content-Type", "application/json")
@@ -155,17 +155,23 @@ export default class HomeScreen extends Component {
           {/* <Text style={styles.titleText}>PAGE PRINCIPALE</Text> */}
           {/* <Text></Text> */}
           {/* <Text> INFOS USER EN LOCAL STORAGE: </Text> */}
-          <Text style={styles.texte, styles.titre1}>Bienvenue {this.state.login} ! </Text>
+          <Text style={styles.espacement}></Text>
+          <Text style={(styles.texte, styles.titre1)}>
+            Bienvenue {this.state.login} !{" "}
+          </Text>
           <Text></Text>
-          <Text style={styles.texte}>Vous bénéficiez déjà des discounts suivants : </Text>
+          <Text style={styles.texte}>
+            Vous bénéficiez déjà des discounts suivants :{" "}
+          </Text>
           <Text></Text>
           {this.state.discountsLinks.map((item, key) => (
-            <Text key={key} style={styles.code}>{item}</Text>
-            )
-          )}
+            <Text key={key} style={styles.code}>
+              {item}{key}
+            </Text>
+          ))}
           <Text></Text>
-        <Image style={{ width: 150, height: 150 }} source={logo} />
-        <Text></Text>
+          <Image style={{ width: 150, height: 150 }} source={logo} />
+          <Text></Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.props.navigation.navigate("ScanIt")}
@@ -183,6 +189,22 @@ export default class HomeScreen extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
+              // vider storage:
+              let _viderStorage = async () => {
+                try {
+                  await AsyncStorage.setItem("token", "")
+                } catch (error) {}
+          
+                try {
+                  await AsyncStorage.setItem("user", "")
+                } catch (error) {}
+          
+                try {
+                  await AsyncStorage.setItem("login", "")
+                } catch (error) {}
+              }
+              _viderStorage()
+              this.props.navigation.navigate("Home")
               console.log("ici")
             }}
           >
@@ -216,7 +238,7 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontSize: 32
   },
-  
+
   code: {
     fontWeight: "100",
     height: "auto",
@@ -250,6 +272,9 @@ const styles = StyleSheet.create({
     color: "rgb(0, 0, 0)"
   },
   texte: {
-    fontWeight: "100",
+    fontWeight: "100"
+  },
+  espacement: {
+    paddingTop: 10
   }
 })

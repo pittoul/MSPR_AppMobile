@@ -10,34 +10,44 @@ import HistoriqueScreen from "./screens/Historique"
 import ScanIt from "./screens/ScanIt"
 import Profil from "./screens/Profil"
 
-
 // Les routes:
 const RootStack = createStackNavigator(
   {
-    // Modèle : 
+    // Modèle :
     // NomDuLien: NomDuScreenImporté
     Home: {
-      screen: HomeScreen, 
+      screen: HomeScreen,
       navigationOptions: {
-      header: null,
-      title: "Accueil",
-    }
-  },
+        header: null,
+        title: "Accueil"
+      }
+    },
     PageConnexion: {
       screen: PageConnexion,
       navigationOptions: {
-      header: null,
-
-        // headerHomeTitle : "zboub",
-        // headerLeft: "zzzzzz",
+        header: null,
         title: "Retour"
       }
     },
-    PageInscription: PageInscription,
-    InfosLegales: InfosLegalesScreen,
-    Historique: HistoriqueScreen,
+    PageInscription: {screen: PageInscription,
+    navigationOptions:{
+      header: null
+    }},
+    InfosLegales: {
+      screen: InfosLegalesScreen,
+      navigationOptions: {header: null}
+    },
+    Historique: {
+      screen: HistoriqueScreen,
+      navigationOptions: {
+        // header: null
+      }
+    },
     ScanIt: ScanIt,
-    Profil: Profil
+    Profil: {
+      screen: Profil,
+      header: null
+    }
   },
   {
     // Page par défaut :
@@ -47,4 +57,3 @@ const RootStack = createStackNavigator(
 
 // L'application devient ces routes...
 export default createAppContainer(RootStack)
-

@@ -3,14 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TouchableOpacity
 } from "react-native"
-import { StackNavigator } from "react-navigation"
-import { createAppContainer } from "react-navigation"
-import { createStackNavigator } from "react-navigation-stack"
-import coca from "../assets/coca.jpg"
 import logo from "../assets/logo.png"
 
 export default class HomeScreen extends Component {
@@ -41,22 +36,7 @@ export default class HomeScreen extends Component {
           <Text style={styles.buttonPetitText}>- Informations Légales -</Text>
         </TouchableOpacity>
         <Text></Text>
-
-        {/* <Text>Bouton provisoire:</Text>
-        <TouchableOpacity
-          style={styles.buttonPetit}
-          title="Informations Légales"
-          onPress={() => this.props.navigation.navigate("Historique")}
-        >
-          <Text style={styles.buttonPetitText}>-Historique des promos-</Text>
-        </TouchableOpacity>
-        <Text></Text> */}
-
         <Image style={{ width: 150, height: 150 }} source={logo} />
-        {/* <Image
-          style={{ width: 220, height: 75 }}
-          source={require("../assets/williamS.png")}
-        /> */}
       </View>
     )
   }
@@ -65,7 +45,6 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#acf",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -100,15 +79,11 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontSize: 10,
     color: "rgb(0, 0, 0)"
-    // marginBottom:10,
-    // paddingBottom: 5
   },
   buttonPetit: {
-    // backgroundColor: "#acbf",
     paddingTop: 30,
     padding: 10,
     borderRadius: 5,
     borderBottomWidth: 1
-    // borderTopWidth: 1
   }
 })

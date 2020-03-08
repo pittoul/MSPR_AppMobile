@@ -50,6 +50,8 @@ export default class Profil extends ValidationComponent {
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+          <Text style={styles.espacement} ></Text>
+
         <Form ref="form" onSubmit={this.submit} style={styles.container}>
           <Image style={{ width: 90, height: 90 }} source={logo} />
           <TextValidator
@@ -106,18 +108,28 @@ export default class Profil extends ValidationComponent {
             style={styles.input}
           />
           <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
           
           <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
             <Text style={styles.buttonText}> Valider </Text>
           </TouchableOpacity>
           <Text style={styles.espacement} ></Text>
           <Text style={styles.espacement} ></Text>
-          <Text style={styles.espacement} ></Text>
-          <Text style={styles.espacement} ></Text>
-          <Text style={styles.espacement} ></Text>
-          <Text style={styles.espacement} ></Text>
-          <Text style={styles.espacement} ></Text>
           <Image style={{ width: 40, height: 40 }} source={logo} />
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => {
+            this.props.navigation.navigate("Home")
+          }}
+          >
+            <Text style={styles.buttonText}> Retour </Text>
+          </TouchableOpacity>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
+          <Text style={styles.espacement} ></Text>
           <Text style={styles.espacement} ></Text>
 
 

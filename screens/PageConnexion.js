@@ -12,6 +12,7 @@ import {
   StatusBarPropsIOS,
   StatusBarIOS,
   StatusBar,
+  ActivityIndicator,
   Image
 } from "react-native"
 import ValidationComponent from "react-native-form-validator"
@@ -25,6 +26,21 @@ export default class PageConnexion extends ValidationComponent {
       password: ""
     }
   }
+  // On vide le AsyncStorage :
+  _viderStorage = async () => {
+    try {
+      await AsyncStorage.setItem("token", "")
+    } catch (error) {}
+
+    try {
+      await AsyncStorage.setItem("user", "")
+    } catch (error) {}
+
+    try {
+      await AsyncStorage.setItem("login", "")
+    } catch (error) {}
+  }
+  // _viderStorage()
 
   render() {
     return (
@@ -93,7 +109,9 @@ export default class PageConnexion extends ValidationComponent {
                           "login",
                           JSON.stringify(this.state.username)
                         )
-                      } catch (error) {}
+                      } catch (error) {
+                        console.log("erreur de fetch..." , error)
+                      }
                     }
                     _storeLogin()
                     // Redirection:

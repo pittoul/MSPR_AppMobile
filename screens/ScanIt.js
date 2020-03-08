@@ -39,6 +39,7 @@ export default function ScanIt() {
 
       console.log("TAB", tabDisc)
       user.discounts = tabDisc
+      console.log(user)
 
       // Remettre user dans le storage
       let _storeUser = async () => {

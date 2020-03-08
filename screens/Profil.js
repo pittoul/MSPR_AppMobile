@@ -39,6 +39,20 @@ export default class Profil extends Component {
       }
     }
     _user()
+
+    let _token = async () => {
+      try {
+        const value = await AsyncStorage.getItem("token")
+        // console.log(JSON.parse(value))
+        this.setState({
+          token: value
+        })
+        // console.log(this.state.user.firstName)
+      } catch (error) {
+        console.log("Error retrieving TOKEN dans page PROFIL!")
+      }
+    }
+    _token()
   }
 
   render() {
@@ -86,33 +100,78 @@ export default class Profil extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
+              let user = {}
+
               if (
                 this.state.password != "" &&
                 this.state.password == this.state.confirmPassword
               ) {
-                let user = {
-                  email: this.state.userName,
-                  firstName: this.state.firstName,
-                  lastName: this.state.lastName,
-                  password: this.state.password,
-                  phone: this.state.phone,
-                  hasAgreed: true
-                }
-                // Fetch updateUser
-                // Ecran WELCOME pendant 3 secondes
-                this.props.navigation.navigate("Historique")
-              } else {
+                this.state.user.password = this.state.password
+                console.log("Le user a pour password : ", this.state.password)
+              }else if (this.state.password != this.state.confirmPassword){
                 alert("Les mots de passe ne correspondent pas !")
               }
+
+              if (this.state.firstName != ""){
+                this.state.user.firstName = this.state.firstName
+              }
+
+              if (this.state.lastName != ""){
+                this.state.user.lastName = this.state.lastName
+              }
+
+              if (this.state.phone != ""){
+                this.state.user.phone = this.state.phone
+              }
+
+            console.log("Infos user à mettre à jour : ", user)
+            console.log("Le token depuis page profil : ", this.state.token)
+                // user = {
+                //   email: this.state.userName,
+                //   firstName: this.state.firstName,
+                //   lastName: this.state.lastName,
+                //   password: this.state.password,
+                //   phone: this.state.phone,
+                //   hasAgreed: true
+                // }
+                // Fetch updateUser
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/merge-patch+json");
+                myHeaders.append("Authorization", "Bearer " + this.state.token);
+                var raw = user;
+                var requestOptions = {
+                  method: 'PATCH',
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: 'follow'
+                };
+                
+                fetch("http://qr-code-app-v2.herokuapp.com/api/users/" + user.id, requestOptions)
+                  .then(response => response.text())
+                  .then(result => console.log(result))
+                  .catch(error => console.log('error', error));
+                // Ecran WELCOME pendant 3 secondes
+                this.props.navigation.navigate("Historique")
+              // } else {
+              // }
             }}
           >
             <Text style={styles.buttonText}>Enregistrer les modifs</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              this.props.navigation.navigate("Historique")
+            }}
+            ><Text>Retour</Text></TouchableOpacity>
+
           <Button
             style={styles.buttonText}
             title="Accueil"
             onPress={() => this.props.navigation.navigate("Home")}
           />
+          
             {/*<Button
             style={styles.buttonPetitText}
             title="Retour"
@@ -140,15 +199,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  // button: {
-  //   alignItems: "center",
-  //   backgroundColor: "powderblue",
-  //   padding: 10,
-  //   borderWidth: 1,
-  //   borderColor: "white",
-  //   borderRadius: 5,
-  //   marginBottom: 10
-  // },
   buttonText: {
     fontWeight: "100",
     fontSize: 20,
@@ -158,7 +208,6 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     minWidth: 220,
     height: 44,
-    // borderWidth: 1,
     textAlign: "center",
     marginVertical: 10,
     borderRadius: 5,
