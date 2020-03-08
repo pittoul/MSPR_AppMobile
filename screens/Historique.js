@@ -22,6 +22,8 @@ export default class HomeScreen extends Component {
       discounts: [],
       discountsLinks: []
     }
+
+     
   }
 
   /**
@@ -30,6 +32,13 @@ export default class HomeScreen extends Component {
    *
    */
   componentDidMount() {
+     // On vide le User du AsyncStorage :
+     let _viderStorage = async () => {
+      try {
+        await AsyncStorage.setItem("user", "")
+      } catch (error) {}
+    }
+    _viderStorage()
   
     // Création des variables (qui sont des fonctions !)
     let _infosToken = async () => {
@@ -68,33 +77,36 @@ export default class HomeScreen extends Component {
     _infoLogin()
 
     // DEBUT REQUETE GET USER BY MAIL:
-    let _requeteGetUser = () => {
-      var myHeaders = new Headers()
+    let _requeteGetUser = async () => {
+      let myHeaders = new Headers()
       myHeaders.append("Accept", "application/json")
       myHeaders.append("Content-Type", "application/json")
       myHeaders.append("Authorization", "Bearer " + this.state.token)
-      var raw = JSON.stringify({ username: this.state.login })
-      var requestOptions = {
+      let raw = JSON.stringify({ username: this.state.login })
+      let requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
         redirect: "follow"
       }
 
-      fetch(
+     let response = await fetch(
         "http://qr-code-app-v2.herokuapp.com/api/users/find_by_email",
         requestOptions
       )
-        .then(response => response.text())
-        .then(result => {
-          // console.log(result)
+      let data = await response
+      console.log("Méthode AWAIT : ", typeof data)
+        // .then(response => response.text())
+        // .then(result => {
+        //   console.log("\n\nOn store le user recupéré depuis la page HISTORIQUE",result)
+
           let _storeUser = async () => {
             try {
-              await AsyncStorage.setItem("user", result)
+              await AsyncStorage.setItem("user", data)
             } catch (error) {}
           }
           _storeUser()
-        })
+        // })
         .catch(error => console.log("error", error))
     }
     // Verifier si user existe(si on a modifié le profil), sinon, faire la requete
@@ -152,9 +164,6 @@ export default class HomeScreen extends Component {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
-          {/* <Text style={styles.titleText}>PAGE PRINCIPALE</Text> */}
-          {/* <Text></Text> */}
-          {/* <Text> INFOS USER EN LOCAL STORAGE: </Text> */}
           <Text style={styles.espacement}></Text>
           <Text style={(styles.texte, styles.titre1)}>
             Bienvenue {this.state.login} !{" "}
@@ -164,9 +173,10 @@ export default class HomeScreen extends Component {
             Vous bénéficiez déjà des discounts suivants :{" "}
           </Text>
           <Text></Text>
+          {/* AFFICHER UN MESSAGE SI AUCUN DISCOUNT N'EXISTE !!! */}
           {this.state.discountsLinks.map((item, key) => (
             <Text key={key} style={styles.code}>
-              {item}{key}
+              {item}
             </Text>
           ))}
           <Text></Text>

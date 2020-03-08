@@ -124,21 +124,15 @@ export default class Profil extends Component {
                 this.state.user.phone = this.state.phone
               }
 
-            console.log("Infos user à mettre à jour : ", user)
+            console.log("Infos user à mettre à jour : ", this.state.user)
             console.log("Le token depuis page profil : ", this.state.token)
-                // user = {
-                //   email: this.state.userName,
-                //   firstName: this.state.firstName,
-                //   lastName: this.state.lastName,
-                //   password: this.state.password,
-                //   phone: this.state.phone,
-                //   hasAgreed: true
-                // }
                 // Fetch updateUser
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/merge-patch+json");
-                myHeaders.append("Authorization", "Bearer " + this.state.token);
-                var raw = user;
+                myHeaders.append("Authorization", "Bearer " + JSON.parse(this.state.token));
+                // console.log('les HEADERS : ', myHeaders)
+                var raw = JSON.stringify(this.state.user);
+                // console.log("\nRAW est de type : ", typeof raw , "\n" )
                 var requestOptions = {
                   method: 'PATCH',
                   headers: myHeaders,
@@ -146,7 +140,7 @@ export default class Profil extends Component {
                   redirect: 'follow'
                 };
                 
-                fetch("http://qr-code-app-v2.herokuapp.com/api/users/" + user.id, requestOptions)
+                fetch("http://qr-code-app-v2.herokuapp.com/api/users/" + JSON.parse(this.state.user.id), requestOptions)
                   .then(response => response.text())
                   .then(result => console.log(result))
                   .catch(error => console.log('error', error));

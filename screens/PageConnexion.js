@@ -25,22 +25,23 @@ export default class PageConnexion extends ValidationComponent {
       username: "",
       password: ""
     }
+    // On vide le AsyncStorage :
+    _viderStorage = async () => {
+      console.log("Tentative de vidage du storage.....")
+      try {
+        await AsyncStorage.setItem("token", "")
+      } catch (error) {}
+  
+      try {
+        await AsyncStorage.setItem("user", "")
+      } catch (error) {}
+  
+      try {
+        await AsyncStorage.setItem("login", "")
+      } catch (error) {}
+    }
+    // _viderStorage()
   }
-  // On vide le AsyncStorage :
-  _viderStorage = async () => {
-    try {
-      await AsyncStorage.setItem("token", "")
-    } catch (error) {}
-
-    try {
-      await AsyncStorage.setItem("user", "")
-    } catch (error) {}
-
-    try {
-      await AsyncStorage.setItem("login", "")
-    } catch (error) {}
-  }
-  // _viderStorage()
 
   render() {
     return (
