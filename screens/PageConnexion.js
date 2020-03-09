@@ -47,6 +47,8 @@ export default class PageConnexion extends ValidationComponent {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+        {/* {this.state.loaded ? <Text>YOOOOOOOOOOOOOOO</Text> : <Text>Loading....</Text>} */}
+
           <Text style={styles.espacement}></Text>
           <Text style={styles.titre1}>Connexion : </Text>
           <Text style={styles.errorMessage}>{this.state.error}</Text>

@@ -22,8 +22,6 @@ export default class HomeScreen extends Component {
       discounts: [],
       discountsLinks: []
     }
-
-     
   }
 
   /**
@@ -32,14 +30,14 @@ export default class HomeScreen extends Component {
    *
    */
   componentDidMount() {
-     // On vide le User du AsyncStorage :
-     let _viderStorage = async () => {
+    // On vide le User du AsyncStorage :
+    let _viderStorage = async () => {
       try {
         await AsyncStorage.setItem("user", "")
       } catch (error) {}
     }
     _viderStorage()
-  
+
     // Création des variables (qui sont des fonctions !)
     let _infosToken = async () => {
       try {
@@ -89,81 +87,123 @@ export default class HomeScreen extends Component {
         body: raw,
         redirect: "follow"
       }
-
-     let response = await fetch(
+      let response = await fetch(
         "http://qr-code-app-v2.herokuapp.com/api/users/find_by_email",
         requestOptions
       )
-      let data = await response
-      console.log("Méthode AWAIT : ", typeof data)
-        // .then(response => response.text())
-        // .then(result => {
-        //   console.log("\n\nOn store le user recupéré depuis la page HISTORIQUE",result)
-
-          let _storeUser = async () => {
-            try {
-              await AsyncStorage.setItem("user", data)
-            } catch (error) {}
-          }
-          _storeUser()
-        // })
-        .catch(error => console.log("error", error))
-    }
-    // Verifier si user existe(si on a modifié le profil), sinon, faire la requete
-    _requeteGetUser()
-
-    let _user = async () => {
-      try {
-        const value = await AsyncStorage.getItem("user")
-        // console.log("ICIIIIII", JSON.parse(value))
-        this.setState({
-          user: JSON.parse(value)
-        })
-        // console.log("DANS OBJET : ", this.state.user.discounts)
-        let tabDiscounts = this.state.user.discounts
-        let discountsLinksProvisoire = []
-        console.log(tabDiscounts)
-        tabDiscounts.forEach(element => {
-          var myHeaders = new Headers()
-          myHeaders.append("Content-Type", "application/json")
-          myHeaders.append("Authorization", "Bearer " + this.state.token)
-          var file = ""
-          var requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-            body: file,
-            redirect: "follow"
-          }
-          fetch("http://qr-code-app-v2.herokuapp.com" + element, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-              // console.log(JSON.parse(result).link)
-              discountsLinksProvisoire[
-                discountsLinksProvisoire.length
-              ] = JSON.parse(result).link
-              // console.log(discountsLinksProvisoire);
-              this.setState({
-                discountsLinks: discountsLinksProvisoire
-              })
-            })
-            .catch(error => console.log("error", error))
-          this.setState({
-            discounts: tabDiscounts
-          })
-          // console.log('DISCOUTSLINKS : ', this.state.discountsLinks)
-          // console.log('TRUC', element)
-        })
-      } catch (error) {
-        console.log("Error retrieving le User dans page PROFIL!", error)
+      let data = await response.text()
+      console.log("Méthode AWAIT : ", data)
+      this.setState({
+        user: JSON.parse(data)
+      })
+      console.log("le user from bdd : ", this.state.user)
+      let _storeUser = async () => {
+        try {
+          await AsyncStorage.setItem("user", JSON.stringify(this.state.user))
+        } catch (error) {}
       }
+
+      if (this.state.user) {
+        _storeUser()
+      }
+      // Vérifier que le usr est bien dans le storage
+      const value = await AsyncStorage.getItem("user")
+      console.log("ICIIIIII", JSON.parse(value))
+
+      myHeaders = new Headers()
+      myHeaders.append("Content-Type", "application/json")
+      myHeaders.append("Authorization", "Bearer " + this.state.token)
+
+      var file = ""
+      requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        body: file,
+        redirect: "follow"
+      }
+
+      let fetchDiscount
+        // let fetchDiscount = await fetch(
+      //   "http://qr-code-app-v2.herokuapp.com" + element,
+      //   requestOptions
+      // )
+
+      let tabDiscounts = this.state.user.discounts
+      let discountsLinksProvisoire = []
+      console.log("les discounts : ", tabDiscounts)
+      tabDiscounts.forEach(async (element) => {
+        // fetchDiscount()
+        fetchDiscount = await fetch(
+          "http://qr-code-app-v2.herokuapp.com" + element,
+          requestOptions
+        )
+        let unDiscount = await fetchDiscount.text()
+        console.log('un discount :',unDiscount)
+        discountsLinksProvisoire[
+          discountsLinksProvisoire.length
+        ] = JSON.parse(unDiscount).link
+        // console.log(discountsLinksProvisoire);
+        this.setState({
+          discountsLinks: discountsLinksProvisoire
+        })
+      })
     }
-    _user()
+    // console.log("les discounts : ", this.state.user.discounts)
+
+    // let _user = async () => {
+    //   try {
+    //     const value = await AsyncStorage.getItem("user")
+    //     console.log("ICIIIIII", JSON.parse(value))
+    //     this.setState({
+    //       user: JSON.parse(value)
+    //     })
+    //     console.log("DANS OBJET : ", this.state.user.discounts)
+    //     let tabDiscounts = this.state.user.discounts
+    //     let discountsLinksProvisoire = []
+    //     console.log(tabDiscounts)
+    //     tabDiscounts.forEach(element => {
+    //       var myHeaders = new Headers()
+    //       myHeaders.append("Content-Type", "application/json")
+    //       myHeaders.append("Authorization", "Bearer " + this.state.token)
+    //       var file = ""
+    //       var requestOptions = {
+    //         method: "GET",
+    //         headers: myHeaders,
+    //         body: file,
+    //         redirect: "follow"
+    //       }
+    //       fetch("http://qr-code-app-v2.herokuapp.com" + element, requestOptions)
+    //         .then(response => response.text())
+    //         .then(result => {
+    //           // console.log(JSON.parse(result).link)
+    //           discountsLinksProvisoire[
+    //             discountsLinksProvisoire.length
+    //           ] = JSON.parse(result).link
+    //           // console.log(discountsLinksProvisoire);
+    //           this.setState({
+    //             discountsLinks: discountsLinksProvisoire
+    //           })
+    //         })
+    //         .catch(error => console.log("error", error))
+    //       this.setState({
+    //         discounts: tabDiscounts
+    //       })
+    //       // console.log('DISCOUTSLINKS : ', this.state.discountsLinks)
+    //       // console.log('TRUC', element)
+    //     })
+    //   } catch (error) {
+    //     console.log("Error retrieving le User dans page Historique!", error)
+    //   }
+    // }
+
+    // _user()
   }
 
   render() {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+          {/* {this.state.loaded ? <Text>YOOOOOOOOOOOOOOO</Text> : <Text>Loading....</Text>} */}
           <Text style={styles.espacement}></Text>
           <Text style={(styles.texte, styles.titre1)}>
             Bienvenue {this.state.login} !{" "}
@@ -204,11 +244,11 @@ export default class HomeScreen extends Component {
                 try {
                   await AsyncStorage.setItem("token", "")
                 } catch (error) {}
-          
+
                 try {
                   await AsyncStorage.setItem("user", "")
                 } catch (error) {}
-          
+
                 try {
                   await AsyncStorage.setItem("login", "")
                 } catch (error) {}
@@ -256,9 +296,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: couleurs.fond3,
-    // borderTopLeftRadius: 100,
-    // borderBottomLeftRadius: 50,
-    // borderBottomRightRadius: 50,
     borderWidth: 1
   },
   button: {
@@ -267,7 +304,6 @@ const styles = StyleSheet.create({
     width: 250,
     backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: 10,
-    // borderRadius: 5,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 100,
     borderBottomLeftRadius: 50,
