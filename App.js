@@ -50,6 +50,7 @@ const RootStack = createStackNavigator(
     ScanIt: {
       screen: ScanIt,
       navigationOptions: {
+        title: "Retour"
         // headerLeft: console.log('zbeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuub')
 
         // headerStyle: {backgroundColor:'#3c3c3c'}

@@ -13,16 +13,22 @@ import {
 } from "react-native"
 
 export default class Profil extends Component {
-  state = {
-    token: "",
-    login: "",
-    user: { firstName: "toto" },
-    userName: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
-    phone: ""
+  constructor(props) {
+    super(props)
+    this.state = {
+      token: "",
+      login: "",
+      user: { firstName: "toto" },
+      userName: "",
+      password: "",
+      confirmPassword: "",
+      firstName: "",
+      lastName: "",
+      phone: ""
+    }
+    this.props.navigation.addListener("didFocus", payload => {
+      this.setState({ is_updated: true })
+    })
   }
 
   componentDidMount() {
@@ -108,44 +114,51 @@ export default class Profil extends Component {
               ) {
                 this.state.user.password = this.state.password
                 console.log("Le user a pour password : ", this.state.password)
-              }else if (this.state.password != this.state.confirmPassword){
+              } else if (this.state.password != this.state.confirmPassword) {
                 alert("Les mots de passe ne correspondent pas !")
               }
 
-              if (this.state.firstName != ""){
+              if (this.state.firstName != "") {
                 this.state.user.firstName = this.state.firstName
               }
 
-              if (this.state.lastName != ""){
+              if (this.state.lastName != "") {
                 this.state.user.lastName = this.state.lastName
               }
 
-              if (this.state.phone != ""){
+              if (this.state.phone != "") {
                 this.state.user.phone = this.state.phone
               }
 
-            console.log("Infos user à mettre à jour : ", this.state.user)
-            console.log("Le token depuis page profil : ", this.state.token)
-                // Fetch updateUser
-                var myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/merge-patch+json");
-                myHeaders.append("Authorization", "Bearer " + JSON.parse(this.state.token));
-                // console.log('les HEADERS : ', myHeaders)
-                var raw = JSON.stringify(this.state.user);
-                // console.log("\nRAW est de type : ", typeof raw , "\n" )
-                var requestOptions = {
-                  method: 'PATCH',
-                  headers: myHeaders,
-                  body: raw,
-                  redirect: 'follow'
-                };
-                
-                fetch("http://qr-code-app-v2.herokuapp.com/api/users/" + JSON.parse(this.state.user.id), requestOptions)
-                  .then(response => response.text())
-                  .then(result => console.log(result))
-                  .catch(error => console.log('error', error));
-                // Ecran WELCOME pendant 3 secondes
-                this.props.navigation.navigate("Historique")
+              console.log("Infos user à mettre à jour : ", this.state.user)
+              console.log("Le token depuis page profil : ", this.state.token)
+              // Fetch updateUser
+              var myHeaders = new Headers()
+              myHeaders.append("Content-Type", "application/merge-patch+json")
+              myHeaders.append(
+                "Authorization",
+                "Bearer " + JSON.parse(this.state.token)
+              )
+              // console.log('les HEADERS : ', myHeaders)
+              var raw = JSON.stringify(this.state.user)
+              // console.log("\nRAW est de type : ", typeof raw , "\n" )
+              var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+              }
+
+              fetch(
+                "http://qr-code-app-v2.herokuapp.com/api/users/" +
+                  JSON.parse(this.state.user.id),
+                requestOptions
+              )
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log("error", error))
+              // Ecran WELCOME pendant 3 secondes
+              this.props.navigation.navigate("Historique")
               // } else {
               // }
             }}
@@ -158,15 +171,17 @@ export default class Profil extends Component {
             onPress={() => {
               this.props.navigation.navigate("Historique")
             }}
-            ><Text>Retour</Text></TouchableOpacity>
+          >
+            <Text>Retour</Text>
+          </TouchableOpacity>
 
           <Button
             style={styles.buttonText}
             title="Accueil"
             onPress={() => this.props.navigation.navigate("Home")}
           />
-          
-            {/*<Button
+
+          {/*<Button
             style={styles.buttonPetitText}
             title="Retour"
             onPress={() => this.props.navigation.goBack()}

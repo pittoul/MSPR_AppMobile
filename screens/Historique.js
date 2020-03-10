@@ -9,12 +9,11 @@ import {
   AsyncStorage
 } from "react-native"
 import React, { Component } from "react"
-import { AuthSession } from "expo"
+import { AuthSession, Linking } from "expo"
 import logo from "../assets/logo.png"
 
 export default class HomeScreen extends Component {
 
-  
   constructor(props) {
     super(props)
     this.state = {
@@ -25,7 +24,16 @@ export default class HomeScreen extends Component {
       discountsLinks: []
     }
   }
-
+  
+  componentDidUpdate(){
+    // RAFRAICHISSEMENT DE LA PAGE (ou alors creer une variable en storage qui change de valeur en fonction de la page et on la teste, si 'blabla' then update)
+    
+    // marche pas:
+    this.props.navigation.addListener("didFocus", payload => {
+      this.setState({ is_updated: true })
+    })
+  }
+  
   /**
    *
    * Recupération des variables du storage dans le 'state' de la page:
@@ -34,7 +42,10 @@ export default class HomeScreen extends Component {
   componentDidMount() {
     console.log(
       "\n\n\n* * * * * * * * * * * * * * * * * * \n*\n* DANS 'componentDidMount()'\n*\n* * * * * * * * * * * * * * * * * * \n"
-    )
+      )
+      _voirProps = () => console.log("\n\n\n  VOIR TOUTES LES CLES DE PROPS:\n", this.props, "\n--\n--\n--")
+    _voirProps()
+    // console.log("Dans did munt , test prpos",this.props.valeurTest)
     // On vide le User du AsyncStorage :
     // let _viderStorage = async () => {
     //   try {
@@ -77,13 +88,13 @@ export default class HomeScreen extends Component {
           })
           // if (!_getUser()) {
           //   console.log("LE USER EST VIDE DANS LE STORAGE, DONC ON LE GET")
-            _requeteGetUser()
+          _requeteGetUser()
           // } else {
           //   console.log("LE USER EXISTE DEJA, QU'EST CE QU'ON FAIT ?")
           //   this.setState({
           //     user: JSON.parse(_getUser())
           //   })
-          }
+        }
         // }
       } catch (error) {
         console.log("Error retrieving user")
@@ -110,14 +121,14 @@ export default class HomeScreen extends Component {
         requestOptions
       )
       let data = await response.text()
-      console.log("\nMéthode AWAIT on a le password : ", data)
+      console.log("\nMéthode AWAIT on a le password : \n", data, "\n\n")
       this.setState({
         user: JSON.parse(data)
       })
 
       console.log(
-        "\n\nle user from bdd avec son password et qui va aller\ndans le storage sans son mot depasse...\n",
-        this.state.user
+        "\n-\n_\n-\nle user from bdd avec son password et qui va aller\ndans le storage sans son mot depasse :\n",
+        this.state.user, "\n\n"
       )
       delete this.state.user.password // pour qu'il ne soit pas remplacé par son propre hash !!!
       let _storeUser = async () => {
@@ -132,8 +143,8 @@ export default class HomeScreen extends Component {
       // Vérifier que le usr est bien dans le storage
       const value = await AsyncStorage.getItem("user")
       console.log(
-        "\nLe user qui revient du AsyncStorage :\n",
-        JSON.parse(value)
+        "\n\nLe user qui revient du AsyncStorage :\n",
+        JSON.parse(value), "\n\n"
       )
 
       myHeaders = new Headers()
@@ -152,7 +163,7 @@ export default class HomeScreen extends Component {
       let fetchDiscount
       let tabDiscounts = this.state.user.discounts
       let discountsLinksProvisoire = []
-      console.log("\nles discounts issus du user :\n", tabDiscounts)
+      console.log("\n|\n|\nles discounts issus du user :\n", tabDiscounts, "\n\n")
       tabDiscounts.forEach(async element => {
         // fetchDiscount()
         fetchDiscount = await fetch(
@@ -160,7 +171,12 @@ export default class HomeScreen extends Component {
           requestOptions
         )
         let unDiscount = await fetchDiscount.text()
-        console.log("id du discount :", JSON.parse(unDiscount).id, " - texte : ", JSON.parse(unDiscount).link)
+        console.log(
+          "id du discount :",
+          JSON.parse(unDiscount).id,
+          " - texte : ",
+          JSON.parse(unDiscount).link
+        )
         discountsLinksProvisoire[discountsLinksProvisoire.length] = JSON.parse(
           unDiscount
         ).link
@@ -182,6 +198,9 @@ export default class HomeScreen extends Component {
           <Text style={(styles.texte, styles.titre1)}>
             Bienvenue {this.state.login} !{" "}
           </Text>
+          <Text></Text>
+          <Text style={styles.texte}>TODO: swipe to delete discount:</Text> 
+          <Text style={styles.texte}>https://snack.expo.io/@ngocthua92/react-native-swipeout</Text>
           <Text></Text>
           <Text style={styles.texte}>
             Vous bénéficiez déjà des discounts suivants :{" "}
@@ -214,16 +233,21 @@ export default class HomeScreen extends Component {
             style={styles.button}
             onPress={() => {
               // vider storage:
-              
+
               let _getUser = async () => {
                 await AsyncStorage.setItem("user", "")
                 await AsyncStorage.setItem("login", "")
                 await AsyncStorage.setItem("token", "")
                 let userVide = await AsyncStorage.getItem("user")
-                if(!userVide){
-                  console.log("\n\n\nle user est bien vidé lors de la déconnexion !\n")
+                if (!userVide) {
+                  console.log(
+                    "\n\n\nle user est bien vidé lors de la déconnexion !\n"
+                  )
                 } else {
-                  console.log("\n\n\t! ! ! !\nErreur - le user est toujours là : \n", userVide)
+                  console.log(
+                    "\n\n\t! ! ! !\nErreur - le user est toujours là : \n",
+                    userVide
+                  )
                 }
 
                 this.props.navigation.navigate("Home")
