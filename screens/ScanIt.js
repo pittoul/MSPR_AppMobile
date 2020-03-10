@@ -45,28 +45,29 @@ export default function ScanIt() {
         user
       )
       let tabDisc = user.discounts
-      console.log("\nVoici le détail de ses discounts...\n", tabDisc)
-      tabDisc[tabDisc.length] = discountAAjouter
+
       /**
-       *
-       *
-       *
-       * ATTENTION VERIFIER QUE LE CODE N'EST PAS DEJA DANS LA LISTE !!!!
-       *
-       *
-       *
+       * VERIFIER QUE LE CODE N'EST PAS DEJA DANS LA LISTE !!!!
        */
 
-      console.log("\nOn ajoute le nouveau code : \n", tabDisc)
-      user.discounts = tabDisc
-      console.log(
-        "\nOn modifie le user pour lui ajouter ce nouveau discount...\n",
-        user
-      )
+      if (!tabDisc.includes(discountAAjouter)){
+        console.log("\nOn a un nouveau discount !\n")
+        tabDisc[tabDisc.length] = discountAAjouter
+        console.log("\nOn ajoute le nouveau code : \n", tabDisc)
+        user.discounts = tabDisc
+        console.log(
+          "\nOn modifie le user pour lui ajouter ce nouveau discount...\n",
+          user
+        )
+      }
+     
+      
+      console.log("\nVoici donc le détail de ses discounts...\n", tabDisc)
+      
       let _majUserState = async () => {
         let leUser = await AsyncStorage.getItem("user")
         console.log("\nuser from storage APRES SCAN\n", JSON.parse(leUser))
-        console.log("\n******************************\n*********************************\n**********************\nVoir le user updaté depuis le storage, pas la base :\n", this.props.user)
+        console.log("\n******************************\n*********************************\n**********************\nVoir le user updaté depuis le storage, pas la base :\n", leUser)
       }
       _majUserState()
       // console.log("user que l'on va renvoyer (en ayant supprimé le password !!!):", user)
