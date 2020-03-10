@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react"
 import { Text, View, StyleSheet, Button, AsyncStorage } from "react-native"
 import { BarCodeScanner } from "expo-barcode-scanner"
 /**
- * 
- * 
- * Un QR CODE CONTIENT L'ID DU DISCOUNT 
- * 
- * 
- * 
+ *
+ *
+ * Un QR CODE CONTIENT L'ID DU DISCOUNT
+ *
+ *
+ *
  */
 export default function ScanIt() {
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
-
+  console.log("\n* * * * * * * * On est dans le ScanIt() ! * * * * * * * * \n")
   useEffect(() => {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
@@ -22,28 +22,62 @@ export default function ScanIt() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true)
+    console.log(
+      "\n\n\n* * * * * * * * * * * * * * * * * * \n*\n* DANS 'handleBarCodeScanned()'\n*\n* * * * * * * * * * * * * * * * * * \n"
+    )
+
     async function getUser() {
       const value = await AsyncStorage.getItem("user")
-      console.log(JSON.parse(value))
+      console.log(
+        "\nAu clic, Voici ce qu'on récupère du storage :\n",
+        JSON.parse(value)
+      )
       alert(
-        `Type de code ${type}\ndata du code : ${data} du user : ${
+        `Type de code ${type}\ndata du code : ${data}, id du user : ${
           JSON.parse(value).id
         }`
       )
 
       let discountAAjouter = "/api/discounts/" + data
       let user = JSON.parse(value)
+      console.log(
+        "\nAu clic, vérifions ce qu'on récupère comme user depuis le storage :\n",
+        user
+      )
       let tabDisc = user.discounts
-      console.log("TAB", tabDisc)
+      console.log("\nVoici le détail de ses discounts...\n", tabDisc)
       tabDisc[tabDisc.length] = discountAAjouter
+      /**
+       *
+       *
+       *
+       * ATTENTION VERIFIER QUE LE CODE N'EST PAS DEJA DANS LA LISTE !!!!
+       *
+       *
+       *
+       */
 
-      console.log("TAB", tabDisc)
+      console.log("\nOn ajoute le nouveau code : \n", tabDisc)
       user.discounts = tabDisc
-      console.log(user)
+      console.log(
+        "\nOn modifie le user pour lui ajouter ce nouveau discount...\n",
+        user
+      )
+      let _majUserState = async () => {
+        let leUser = await AsyncStorage.getItem("user")
+        console.log("\nuser from storage APRES SCAN\n", JSON.parse(leUser))
+        console.log("\n******************************\n*********************************\n**********************\nVoir le user updaté depuis le storage, pas la base :\n", this.props.user)
+      }
+      _majUserState()
+      // console.log("user que l'on va renvoyer (en ayant supprimé le password !!!):", user)
 
       // Remettre user dans le storage
       let _storeUser = async () => {
         try {
+          console.log(
+            "\nVoici donc le user en string que l'on remt en storage : \n",
+            JSON.stringify(user)
+          )
           // await AsyncStorage.setItem("user", JSON.stringify(result))
           await AsyncStorage.setItem("user", JSON.stringify(user))
         } catch (error) {}
@@ -71,7 +105,9 @@ export default function ScanIt() {
         requestOptions
       )
         .then(response => response.text())
-        .then(result => console.log(result))
+        .then(result =>
+          console.log("\nLe user à jour retourné par l'API :\n", result)
+        )
         .catch(error => console.log("error", error))
 
       return JSON.parse(value)
@@ -100,7 +136,10 @@ export default function ScanIt() {
       />
 
       {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <Button
+          title={"Flasher un autre code"}
+          onPress={() => setScanned(false)}
+        />
       )}
     </View>
   )

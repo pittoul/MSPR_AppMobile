@@ -13,6 +13,8 @@ import { AuthSession } from "expo"
 import logo from "../assets/logo.png"
 
 export default class HomeScreen extends Component {
+
+  
   constructor(props) {
     super(props)
     this.state = {
@@ -30,13 +32,21 @@ export default class HomeScreen extends Component {
    *
    */
   componentDidMount() {
+    console.log(
+      "\n\n\n* * * * * * * * * * * * * * * * * * \n*\n* DANS 'componentDidMount()'\n*\n* * * * * * * * * * * * * * * * * * \n"
+    )
     // On vide le User du AsyncStorage :
-    let _viderStorage = async () => {
-      try {
-        await AsyncStorage.setItem("user", "")
-      } catch (error) {}
+    // let _viderStorage = async () => {
+    //   try {
+    //     await AsyncStorage.setItem("user", "")
+    //   } catch (error) {}
+    // }
+    let _getUser = async () => {
+      const value = await AsyncStorage.getItem("user")
+      console.log("\nvérification que user est null :\n", value)
     }
-    _viderStorage()
+    // _viderStorage()
+    // _getUser()
 
     // Création des variables (qui sont des fonctions !)
     let _infosToken = async () => {
@@ -65,8 +75,16 @@ export default class HomeScreen extends Component {
           this.setState({
             login: JSON.parse(value)
           })
-          _requeteGetUser()
-        }
+          // if (!_getUser()) {
+          //   console.log("LE USER EST VIDE DANS LE STORAGE, DONC ON LE GET")
+            _requeteGetUser()
+          // } else {
+          //   console.log("LE USER EXISTE DEJA, QU'EST CE QU'ON FAIT ?")
+          //   this.setState({
+          //     user: JSON.parse(_getUser())
+          //   })
+          }
+        // }
       } catch (error) {
         console.log("Error retrieving user")
       }
@@ -92,11 +110,16 @@ export default class HomeScreen extends Component {
         requestOptions
       )
       let data = await response.text()
-      console.log("Méthode AWAIT : ", data)
+      console.log("\nMéthode AWAIT on a le password : ", data)
       this.setState({
         user: JSON.parse(data)
       })
-      console.log("le user from bdd : ", this.state.user)
+
+      console.log(
+        "\n\nle user from bdd avec son password et qui va aller\ndans le storage sans son mot depasse...\n",
+        this.state.user
+      )
+      delete this.state.user.password // pour qu'il ne soit pas remplacé par son propre hash !!!
       let _storeUser = async () => {
         try {
           await AsyncStorage.setItem("user", JSON.stringify(this.state.user))
@@ -108,7 +131,10 @@ export default class HomeScreen extends Component {
       }
       // Vérifier que le usr est bien dans le storage
       const value = await AsyncStorage.getItem("user")
-      console.log("ICIIIIII", JSON.parse(value))
+      console.log(
+        "\nLe user qui revient du AsyncStorage :\n",
+        JSON.parse(value)
+      )
 
       myHeaders = new Headers()
       myHeaders.append("Content-Type", "application/json")
@@ -122,26 +148,22 @@ export default class HomeScreen extends Component {
         redirect: "follow"
       }
 
+      // A METTRE DANS UNE FONCTION:
       let fetchDiscount
-        // let fetchDiscount = await fetch(
-      //   "http://qr-code-app-v2.herokuapp.com" + element,
-      //   requestOptions
-      // )
-
       let tabDiscounts = this.state.user.discounts
       let discountsLinksProvisoire = []
-      console.log("les discounts : ", tabDiscounts)
-      tabDiscounts.forEach(async (element) => {
+      console.log("\nles discounts issus du user :\n", tabDiscounts)
+      tabDiscounts.forEach(async element => {
         // fetchDiscount()
         fetchDiscount = await fetch(
           "http://qr-code-app-v2.herokuapp.com" + element,
           requestOptions
         )
         let unDiscount = await fetchDiscount.text()
-        console.log('un discount :',unDiscount)
-        discountsLinksProvisoire[
-          discountsLinksProvisoire.length
-        ] = JSON.parse(unDiscount).link
+        console.log("id du discount :", JSON.parse(unDiscount).id, " - texte : ", JSON.parse(unDiscount).link)
+        discountsLinksProvisoire[discountsLinksProvisoire.length] = JSON.parse(
+          unDiscount
+        ).link
         // console.log(discountsLinksProvisoire);
         this.setState({
           discountsLinks: discountsLinksProvisoire
@@ -149,54 +171,6 @@ export default class HomeScreen extends Component {
       })
     }
     // console.log("les discounts : ", this.state.user.discounts)
-
-    // let _user = async () => {
-    //   try {
-    //     const value = await AsyncStorage.getItem("user")
-    //     console.log("ICIIIIII", JSON.parse(value))
-    //     this.setState({
-    //       user: JSON.parse(value)
-    //     })
-    //     console.log("DANS OBJET : ", this.state.user.discounts)
-    //     let tabDiscounts = this.state.user.discounts
-    //     let discountsLinksProvisoire = []
-    //     console.log(tabDiscounts)
-    //     tabDiscounts.forEach(element => {
-    //       var myHeaders = new Headers()
-    //       myHeaders.append("Content-Type", "application/json")
-    //       myHeaders.append("Authorization", "Bearer " + this.state.token)
-    //       var file = ""
-    //       var requestOptions = {
-    //         method: "GET",
-    //         headers: myHeaders,
-    //         body: file,
-    //         redirect: "follow"
-    //       }
-    //       fetch("http://qr-code-app-v2.herokuapp.com" + element, requestOptions)
-    //         .then(response => response.text())
-    //         .then(result => {
-    //           // console.log(JSON.parse(result).link)
-    //           discountsLinksProvisoire[
-    //             discountsLinksProvisoire.length
-    //           ] = JSON.parse(result).link
-    //           // console.log(discountsLinksProvisoire);
-    //           this.setState({
-    //             discountsLinks: discountsLinksProvisoire
-    //           })
-    //         })
-    //         .catch(error => console.log("error", error))
-    //       this.setState({
-    //         discounts: tabDiscounts
-    //       })
-    //       // console.log('DISCOUTSLINKS : ', this.state.discountsLinks)
-    //       // console.log('TRUC', element)
-    //     })
-    //   } catch (error) {
-    //     console.log("Error retrieving le User dans page Historique!", error)
-    //   }
-    // }
-
-    // _user()
   }
 
   render() {
@@ -240,21 +214,21 @@ export default class HomeScreen extends Component {
             style={styles.button}
             onPress={() => {
               // vider storage:
-              let _viderStorage = async () => {
-                try {
-                  await AsyncStorage.setItem("token", "")
-                } catch (error) {}
+              
+              let _getUser = async () => {
+                await AsyncStorage.setItem("user", "")
+                await AsyncStorage.setItem("login", "")
+                await AsyncStorage.setItem("token", "")
+                let userVide = await AsyncStorage.getItem("user")
+                if(!userVide){
+                  console.log("\n\n\nle user est bien vidé lors de la déconnexion !\n")
+                } else {
+                  console.log("\n\n\t! ! ! !\nErreur - le user est toujours là : \n", userVide)
+                }
 
-                try {
-                  await AsyncStorage.setItem("user", "")
-                } catch (error) {}
-
-                try {
-                  await AsyncStorage.setItem("login", "")
-                } catch (error) {}
+                this.props.navigation.navigate("Home")
               }
-              _viderStorage()
-              this.props.navigation.navigate("Home")
+              _getUser()
               console.log("ici")
             }}
           >

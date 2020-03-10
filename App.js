@@ -29,21 +29,32 @@ const RootStack = createStackNavigator(
         title: "Retour"
       }
     },
-    PageInscription: {screen: PageInscription,
-    navigationOptions:{
-      header: null
-    }},
+    PageInscription: {
+      screen: PageInscription,
+      navigationOptions: {
+        header: null
+      }
+    },
     InfosLegales: {
       screen: InfosLegalesScreen,
-      navigationOptions: {header: null}
+      navigationOptions: { header: null }
     },
     Historique: {
       screen: HistoriqueScreen,
       navigationOptions: {
+        // headerLeft: () => {console.log('zbeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuub')}
+
         // header: null
       }
     },
-    ScanIt: ScanIt,
+    ScanIt: {
+      screen: ScanIt,
+      navigationOptions: {
+        // headerLeft: console.log('zbeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuub')
+
+        // headerStyle: {backgroundColor:'#3c3c3c'}
+      }
+    },
     Profil: {
       screen: Profil,
       header: null
