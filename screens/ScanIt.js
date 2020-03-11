@@ -66,7 +66,7 @@ export default function ScanIt() {
       let _majUserState = async () => {
         let leUser = await AsyncStorage.getItem("user")
         console.log("\nuser from storage APRES SCAN\n", JSON.parse(leUser))
-        console.log("\n******************************\n*********************************\n**********************\nVoir le user updaté depuis le storage, pas la base :\n", this.props.user)
+        console.log("\n******************************\n*********************************\n**********************\nVoir le user updaté depuis le storage, pas la base :\n", leUser)
       }
       _majUserState()
       // console.log("user que l'on va renvoyer (en ayant supprimé le password !!!):", user)
