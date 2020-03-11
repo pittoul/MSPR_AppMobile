@@ -6,14 +6,18 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  RefreshControl
 } from "react-native"
-import React, { Component } from "react"
+import React, { Component, useState } from "react"
 import { AuthSession, Linking } from "expo"
 import logo from "../assets/logo.png"
+import { withNavigation } from "react-navigation"
+
+// const[refreshing,setRefreshing]= useState(false);
 
 export default class HomeScreen extends Component {
-
+  
   constructor(props) {
     super(props)
     this.state = {
@@ -23,15 +27,29 @@ export default class HomeScreen extends Component {
       discounts: [],
       discountsLinks: []
     }
+    this.forceUpdateHandler = ()=>{this.forceUpdateHandler.bind(this)};
   }
+  forceUpdateHandler(){
+    console.log("ON REFRESH !!!!");
+    this.forceUpdate();
+  };
+  
+  // wait(timeout){
+  //   return new Promise(resolve=>{setTimeout(resolve, timeout)});
+  // }
   
   componentDidUpdate(){
     // RAFRAICHISSEMENT DE LA PAGE (ou alors creer une variable en storage qui change de valeur en fonction de la page et on la teste, si 'blabla' then update)
-    
+    // async () => {
+    // const value = await AsyncStorage.getItem("user")
+    //     console.log("\n\n\nUSER RECUPERE du storage : ", JSON.parse(value).discounts)
+    //     this.setState({
+    //       user: JSON.parse(value)
+    //     })}
     // marche pas:
-    this.props.navigation.addListener("didFocus", payload => {
-      this.setState({ is_updated: true })
-    })
+    // this.props.navigation.addListener("didFocus", payload => {
+    //   this.setState({ is_updated: true })
+    // })
   }
   
   /**
@@ -43,21 +61,9 @@ export default class HomeScreen extends Component {
     console.log(
       "\n\n\n* * * * * * * * * * * * * * * * * * \n*\n* DANS 'componentDidMount()'\n*\n* * * * * * * * * * * * * * * * * * \n"
       )
-      _voirProps = () => console.log("\n\n\n  VOIR TOUTES LES CLES DE PROPS:\n", this.props, "\n--\n--\n--")
-    _voirProps()
-    // console.log("Dans did munt , test prpos",this.props.valeurTest)
-    // On vide le User du AsyncStorage :
-    // let _viderStorage = async () => {
-    //   try {
-    //     await AsyncStorage.setItem("user", "")
-    //   } catch (error) {}
-    // }
-    let _getUser = async () => {
-      const value = await AsyncStorage.getItem("user")
-      console.log("\nvérification que user est null :\n", value)
-    }
-    // _viderStorage()
-    // _getUser()
+      // _voirProps = () => console.log("\n\n\n  VOIR TOUTES LES CLES DE PROPS:\n", this.props, "\n--\n--\n--")
+    // _voirProps()
+
 
     // Création des variables (qui sont des fonctions !)
     let _infosToken = async () => {
@@ -86,6 +92,7 @@ export default class HomeScreen extends Component {
           this.setState({
             login: JSON.parse(value)
           })
+          
           // if (!_getUser()) {
           //   console.log("LE USER EST VIDE DANS LE STORAGE, DONC ON LE GET")
           _requeteGetUser()
@@ -193,6 +200,7 @@ export default class HomeScreen extends Component {
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+        <Button onPress= {this.forceUpdateHandler} title="bouton"></Button>
           {/* {this.state.loaded ? <Text>YOOOOOOOOOOOOOOO</Text> : <Text>Loading....</Text>} */}
           <Text style={styles.espacement}></Text>
           <Text style={(styles.texte, styles.titre1)}>

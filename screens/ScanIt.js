@@ -93,6 +93,11 @@ export default function ScanIt() {
       myHeaders.append("Authorization", "Bearer " + token)
 
       var raw = JSON.stringify(user)
+      let userStorage = async () => {
+        const value = await AsyncStorage.setItem("user", JSON.stringify(user))
+        // console.log("\nvérification que user est null :\n", value)
+      }
+      userStorage()
 
       var requestOptions = {
         method: "PATCH",

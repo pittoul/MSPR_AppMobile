@@ -141,6 +141,12 @@ export default class Profil extends Component {
               )
               // console.log('les HEADERS : ', myHeaders)
               var raw = JSON.stringify(this.state.user)
+              // userStorage = async 
+              let userStorage = async () => {
+                const value = await AsyncStorage.setItem("user", JSON.stringify(this.state.user))
+                // console.log("\nvérification que user est null :\n", value)
+              }
+              userStorage()
               // console.log("\nRAW est de type : ", typeof raw , "\n" )
               var requestOptions = {
                 method: "PATCH",

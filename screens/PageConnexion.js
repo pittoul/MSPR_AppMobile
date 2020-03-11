@@ -149,6 +149,7 @@ export default class PageConnexion extends ValidationComponent {
           >
             <Text style={styles.buttonText}> Retour </Text>
           </TouchableOpacity>
+          <Text style={styles.espacement}></Text>
         </View>
       </ScrollView>
     )
