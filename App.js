@@ -42,13 +42,16 @@ const RootStack = createStackNavigator(
         Historique: {
             screen: HistoriqueScreen,
             navigationOptions: {
-                // header: null
+                header: null
             }
         },
         ScanIt: ScanIt,
         Profil: {
             screen: Profil,
-            header: null
+            navigationOptions:{
+              header: null
+
+            }
         }
     },
     {

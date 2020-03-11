@@ -65,6 +65,7 @@ export default class Profil extends Component {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.container}>
+          <Text style={styles.espacement}></Text>
           <Text style={styles.titleText}>VOTRE PROFIL</Text>
           <TextInput
             value={this.state.password}
@@ -141,9 +142,12 @@ export default class Profil extends Component {
               )
               // console.log('les HEADERS : ', myHeaders)
               var raw = JSON.stringify(this.state.user)
-              // userStorage = async 
+              // userStorage = async
               let userStorage = async () => {
-                const value = await AsyncStorage.setItem("user", JSON.stringify(this.state.user))
+                const value = await AsyncStorage.setItem(
+                  "user",
+                  JSON.stringify(this.state.user)
+                )
                 // console.log("\nvérification que user est null :\n", value)
               }
               userStorage()
@@ -171,7 +175,7 @@ export default class Profil extends Component {
           >
             <Text style={styles.buttonText}>Enregistrer les modifs</Text>
           </TouchableOpacity>
-
+          <Text style={styles.espacement}></Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -181,11 +185,11 @@ export default class Profil extends Component {
             <Text>Retour</Text>
           </TouchableOpacity>
 
-          <Button
+          {/* <Button
             style={styles.buttonText}
             title="Accueil"
             onPress={() => this.props.navigation.navigate("Home")}
-          />
+          /> */}
 
           {/*<Button
             style={styles.buttonPetitText}
@@ -218,6 +222,9 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontSize: 20,
     color: "rgb(0, 0, 0)"
+  },
+  espacement: {
+    paddingTop: 10
   },
   input: {
     fontWeight: "100",
