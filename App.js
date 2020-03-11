@@ -7,7 +7,6 @@ import PageConnexion from "./screens/PageConnexion"
 import HomeScreen from "./screens/Home"
 import InfosLegalesScreen from "./screens/InfosLegales"
 import HistoriqueScreen from "./screens/Historique"
-import LoadinPage from "./screens/LoadinPage";
 import ScanIt from "./screens/ScanIt"
 import Profil from "./screens/Profil"
 
@@ -44,12 +43,6 @@ const RootStack = createStackNavigator(
             screen: HistoriqueScreen,
             navigationOptions: {
                 // header: null
-            }
-        },
-        LoadinPage: {
-            screen: LoadinPage,
-            navigationOptions: {
-                header: null
             }
         },
         ScanIt: ScanIt,
