@@ -20,11 +20,11 @@ import logo from "../assets/logo.png"
 
 export default class PageConnexion extends ValidationComponent {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       username: "",
       password: ""
-    }
+    };
     // On vide le AsyncStorage :
     _viderStorage = async () => {
       console.log("Tentative de vidage du storage.....")
@@ -115,12 +115,13 @@ export default class PageConnexion extends ValidationComponent {
                       } catch (error) {
                         console.log("erreur de fetch..." , error)
                       }
-                    }
-                    _storeLogin()
+                    };
+                    _storeLogin();
                     // Redirection:
-                    console.log("RESULT :", result)
+                    console.log("RESULT :", result);
+                    this.props.navigation.navigate("LoadinPage");
                     if (result.token || result.token !== undefined)
-                      this.props.navigation.navigate("Historique")
+                      this.props.navigation.navigate("Historique");
                     else
                       this.setState({
                         error: "Adresse mail ou mot de passe incorrect."

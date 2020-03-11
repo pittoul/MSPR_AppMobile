@@ -56,7 +56,7 @@ https://balsamiq.com/
 
 ## BDD:
 - MySql
-- Géré par Symphonie
+- Géré par Symfony
 
 ### Dictionnaire des données:
 - Table Promo:
